@@ -14,7 +14,7 @@ final class SimpleObjectTest extends TestCase
         $struct = StructFactory::simpleClass();
 
         try {
-            $struct->validate($data, '');
+            $struct->validate($data);
         } catch (\Throwable $e) {
             $this->assertNull($e);
         }

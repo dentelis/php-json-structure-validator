@@ -12,7 +12,7 @@ class _simple extends _struct
     {
     }
 
-    function validate(mixed $value, string $path)
+    function validate(mixed $value, string $path = '')
     {
         if (!$this->nullAllowed && is_null($value)) {
             throw new NullNotAllowedException($path);

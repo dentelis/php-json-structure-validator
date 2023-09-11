@@ -24,7 +24,7 @@ class _array extends _struct
      * @param array $value
      * @param string $path
      */
-    function validate(mixed $value, string $path)
+    function validate(mixed $value, string $path = '')
     {
         if (is_null($value)) {
             if (!$this->nullAllowed) {

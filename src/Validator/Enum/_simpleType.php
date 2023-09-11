@@ -13,7 +13,7 @@ enum _simpleType
     case BOOL;
     case FLOAT;
 
-    public function validate(mixed $value, string $path)
+    public function validate(mixed $value, string $path = '')
     {
         switch ($this) {
             case self::FLOAT:

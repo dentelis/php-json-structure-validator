@@ -24,7 +24,7 @@ class _object extends _struct
         $this->fields[$key] = $value;
     }
 
-    function validate(mixed $value, string $path)
+    function validate(mixed $value, string $path = '')
     {
         if (is_null($value)) {
             if (!$this->nullAllowed) {
