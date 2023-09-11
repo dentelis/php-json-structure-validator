@@ -4,7 +4,7 @@ namespace EntelisTeam\Validator\Structure;
 
 use EntelisTeam\Validator\Exception\ComplexException;
 use EntelisTeam\Validator\Exception\InvalidTypeException;
-use EntelisTeam\Validator\Exception\MissedActualPropertyException;
+use EntelisTeam\Validator\Exception\PropertyUnexpectedException;
 use EntelisTeam\Validator\Exception\MissedPropertyException;
 use EntelisTeam\Validator\Exception\NullNotAllowedException;
 use Exception;
@@ -45,7 +45,7 @@ class _object extends _struct
             foreach ((array)$value as $key => $field) {
                 try {
                     if (!array_key_exists($key, $actualStruct)) {
-                        throw new MissedActualPropertyException($path . '.' . $key);
+                        throw new PropertyUnexpectedException($path . '.' . $key);
                     }
                 } catch (ComplexException $e) {
                     //значит изнутри приехало много сразу ошибок
