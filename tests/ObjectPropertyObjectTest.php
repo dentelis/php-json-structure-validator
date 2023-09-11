@@ -5,7 +5,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use tests\structs\StructFactory;
 
-final class SimpleInheritedObjectTest extends TestCase
+final class ObjectPropertyObjectTest extends TestCase
 {
 
     public static function provider(): array

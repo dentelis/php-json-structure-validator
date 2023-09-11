@@ -16,7 +16,7 @@ class _array extends _struct
      * @param bool $nullAllowed
      * @param bool $emptyAllowed
      */
-    function __construct(private _struct $type, private bool $nullAllowed, private bool $emptyAllowed = true, private ?array $possibleValues = null)
+    function __construct(private _struct|array $type, private bool $nullAllowed, private bool $emptyAllowed = true, private ?array $possibleValues = null)
     {
     }
 
@@ -48,7 +48,29 @@ class _array extends _struct
                             throw new InvalidValueException($path, join('|', $this->possibleValues), $item);
                         }
                     }
-                    $this->type->validate($item, $path . '[]');
+
+                    if ($this->type instanceof _struct) {
+
+                        $this->type->validate($item, $path . '[]');
+
+                    } else {
+                        //несколько вариантов, проверяем каждый
+                        $validateFailCnt = 0;
+                        foreach ($this->type as $type) {
+                            try {
+                                $type->validate($item, $path . '[]');
+                            } catch (\Throwable $e) {
+                                $validateFailCnt++;
+                            }
+                        }
+                        if ($validateFailCnt >= count($this->type))
+                        {
+                            //@todo переделать
+                            throw new InvalidTypeException($path, 'several', 'no one');
+                        }
+
+                    }
+
                 } catch (ComplexException $e) {
                     //значит изнутри приехало много сразу ошибок
                     $innerErrors = unserialize($e->getMessage());

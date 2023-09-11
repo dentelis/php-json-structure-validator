@@ -1,11 +1,18 @@
 <?php
 declare(strict_types=1);
 
+use EntelisTeam\Validator\Enum\_simpleType;
+use EntelisTeam\Validator\Structure\_object;
+use EntelisTeam\Validator\Structure\_property_array;
+use EntelisTeam\Validator\Structure\_property_object;
+use EntelisTeam\Validator\Structure\_property_simple;
+use EntelisTeam\Validator\Structure\_simple;
+use EntelisTeam\Validator\Structure\_struct;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use tests\structs\StructFactory;
 
-final class ObjectWithArrayOfObjectsTest extends TestCase
+final class ObjectPropertyArraySimpleTypeTest extends TestCase
 {
 
     public static function simpleProvider(): array
@@ -24,15 +31,14 @@ final class ObjectWithArrayOfObjectsTest extends TestCase
         $this->check($struct, $data);
     }
 
-    protected function check(\EntelisTeam\Validator\Structure\_struct $struct, mixed $data): void
+    protected function check(_struct $struct, mixed $data): void
     {
         try {
             $struct->validate($data);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->assertNull($e);
         }
         $this->expectNotToPerformAssertions();
     }
-
 
 }

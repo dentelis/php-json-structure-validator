@@ -4,7 +4,7 @@ declare(strict_types=1);
 use tests\structs\StructFactory;
 use PHPUnit\Framework\TestCase;
 
-final class SimpleObjectTest extends TestCase
+final class ObjectSimpleTest extends TestCase
 {
 
     public function testSuccess(): void

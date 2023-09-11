@@ -9,13 +9,13 @@ class _property_array extends _property
     public _struct $type;
 
     /**
-     * @param _struct $arrayItemType Массив типов данных
+     * @param _struct|_struct[] $arrayItemType Массив типов данных
      * @param bool $nullAllowed Является ли null валидным значением
      * @param bool $emptyAllowed Является ли пустое значение валидным
      * @param $required Обязательно ли наличие этого свойства
      * @param array|string|null $possibleValues Возможные значения. Принимает или массив или enum.
      */
-    function __construct(_struct $arrayItemType, bool $nullAllowed, bool $emptyAllowed, public $required = true, array|string|null $possibleValues = null)
+    function __construct(_struct|array $arrayItemType, bool $nullAllowed, bool $emptyAllowed, public $required = true, array|string|null $possibleValues = null)
     {
         if (is_string($possibleValues)) {
             if (!enum_exists($possibleValues)) {
