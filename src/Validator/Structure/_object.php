@@ -2,12 +2,12 @@
 
 namespace EntelisTeam\Validator\Structure;
 
-use Exception;
 use EntelisTeam\Validator\Exception\ComplexException;
 use EntelisTeam\Validator\Exception\InvalidTypeException;
 use EntelisTeam\Validator\Exception\MissedActualPropertyException;
 use EntelisTeam\Validator\Exception\MissedPropertyException;
 use EntelisTeam\Validator\Exception\NullNotAllowedException;
+use Exception;
 
 class _object extends _struct
 {

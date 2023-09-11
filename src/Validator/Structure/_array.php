@@ -2,12 +2,12 @@
 
 namespace EntelisTeam\Validator\Structure;
 
-use Exception;
 use EntelisTeam\Validator\Exception\ComplexException;
 use EntelisTeam\Validator\Exception\EmptyValueException;
 use EntelisTeam\Validator\Exception\InvalidTypeException;
 use EntelisTeam\Validator\Exception\InvalidValueException;
 use EntelisTeam\Validator\Exception\NullNotAllowedException;
+use Exception;
 
 class _array extends _struct
 {

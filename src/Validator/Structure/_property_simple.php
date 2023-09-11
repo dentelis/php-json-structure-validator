@@ -2,8 +2,8 @@
 
 namespace EntelisTeam\Validator\Structure;
 
-use Exception;
 use EntelisTeam\Validator\Enum\_simpleType;
+use Exception;
 
 class _property_simple extends _property
 {
