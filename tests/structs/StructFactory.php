@@ -4,6 +4,7 @@ namespace tests\structs;
 
 use EntelisTeam\Validator\Enum\_simpleType;
 use EntelisTeam\Validator\Structure\_object;
+use EntelisTeam\Validator\Structure\_property_array;
 use EntelisTeam\Validator\Structure\_property_object;
 use EntelisTeam\Validator\Structure\_property_simple;
 
@@ -14,6 +15,14 @@ class StructFactory
         return new _object([
             'id' => new _property_simple(_simpleType::INT, false),
             'title' => new _property_simple(_simpleType::STRING_NOT_EMPTY, false),
+        ]);
+    }
+
+    static function classWithArrayOfClass(): _object
+    {
+        return new _object([
+            'title' => new _property_simple(_simpleType::STRING_NOT_EMPTY, false),
+            'colors' => new _property_array(static::colorClass(), false, false),
         ]);
     }
 
