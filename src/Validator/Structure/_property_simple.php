@@ -15,7 +15,7 @@ class _property_simple extends _property
      * @param $required Обязательно ли наличие этого свойства
      * @param array|string|null $possibleValues Возможные значения. Принимает или массив или enum.
      */
-    function __construct(_simpleType $simpleType, bool $nullAllowed, public $required = true, array|string|null $possibleValues = null)
+    function __construct(_simpleType $simpleType, bool $nullAllowed, public $required = true, array|string|null $possibleValues = null, private ?string $regexp = null)
     {
         if (is_string($possibleValues)) {
             if (!enum_exists($possibleValues)) {
@@ -30,6 +30,6 @@ class _property_simple extends _property
             $possibleValues = $tmp;
         }
 
-        $this->type = new _simple($simpleType, $nullAllowed, $possibleValues);
+        $this->type = new _simple($simpleType, $nullAllowed, $possibleValues, $this->regexp);
     }
 }

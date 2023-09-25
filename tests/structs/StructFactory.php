@@ -14,7 +14,7 @@ class StructFactory
     {
         return new _object([
             'id' => new _property_simple(_simpleType::INT, false),
-            'title' => new _property_simple(_simpleType::STRING_NOT_EMPTY, false),
+            'title' => new _property_simple(_simpleType::STRING_NOT_EMPTY, false, regexp: '~^(.+\s.+)$~'),
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace EntelisTeam\Validator\Enum;
 
 use EntelisTeam\Validator\Exception\EmptyValueException;
 use EntelisTeam\Validator\Exception\InvalidTypeException;
+use EntelisTeam\Validator\Exception\InvalidValueException;
 
 enum _simpleType
 {
@@ -13,23 +14,28 @@ enum _simpleType
     case BOOL;
     case FLOAT;
 
-    public function validate(mixed $value, string $path = '')
+    public function validate(mixed $value, string $path = '', ?string $regexp = null)
     {
         switch ($this) {
             case self::FLOAT:
-                if (gettype($value) == 'integer' || gettype($value) == 'double') {
+                if (gettype($value) === self::INT->getType() || gettype($value) === self::FLOAT->getType()) {
                     break;
                 } else {
                     throw new InvalidTypeException($path, self::getType(), gettype($value));
                 }
+            case self::STRING:
             case self::STRING_NOT_EMPTY:
-                if (gettype($value) === 'string' && !empty($value)) {
-                    break;
-                } elseif (gettype($value) === 'string' && empty($value)) {
-                    throw new EmptyValueException($path);
-                } else {
+
+                if (gettype($value) !== $this->getType()) {
                     throw new InvalidTypeException($path, self::getType(), gettype($value));
+                } elseif ($this === self::STRING_NOT_EMPTY && empty($value)) {
+                    throw new EmptyValueException($path);
+                } elseif (!is_null($regexp) && preg_match($regexp, $value) !== 1) {
+                    throw new InvalidValueException($path, $regexp, $value);
                 }
+
+            case self::INT:
+            case self::BOOL:
             default:
                 if ($this->getType() === gettype($value)) {
                     break;
@@ -37,6 +43,7 @@ enum _simpleType
                     throw new InvalidTypeException($path, self::getType(), gettype($value));
                 }
         }
+
     }
 
     public function getType(): string

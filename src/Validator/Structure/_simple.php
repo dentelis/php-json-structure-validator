@@ -8,7 +8,7 @@ use EntelisTeam\Validator\Exception\NullNotAllowedException;
 
 class _simple extends _struct
 {
-    function __construct(private _simpleType $type, private bool $nullAllowed, private ?array $possibleValues = null)
+    function __construct(private _simpleType $type, private bool $nullAllowed, private ?array $possibleValues = null, private ?string $regexp = null)
     {
     }
 
@@ -19,7 +19,7 @@ class _simple extends _struct
         } elseif ($this->nullAllowed && is_null($value)) {
             return;
         } else {
-            $this->type->validate($value, $path);
+            $this->type->validate($value, $path, $this->regexp);
         }
 
         //проверяем возможные значения
