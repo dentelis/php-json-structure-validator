@@ -47,6 +47,8 @@ final class SimpleTypeValidateTest extends TestCase
             [_simpleType::STRING_NOT_EMPTY, 'false'],
             [_simpleType::STRING_NOT_EMPTY, '1.1'],
             [_simpleType::STRING_NOT_EMPTY, '123456', '~^(\d+)$~'],
+
+            [_simpleType::STRING_URl, 'https://entelis.team'],
         ];
     }
 
@@ -111,8 +113,10 @@ final class SimpleTypeValidateTest extends TestCase
             [_simpleType::STRING_NOT_EMPTY, false, InvalidTypeException::class],
             [_simpleType::STRING_NOT_EMPTY, 100.1, InvalidTypeException::class],
             [_simpleType::STRING_NOT_EMPTY, '',  EmptyValueException::class],
-
             [_simpleType::STRING_NOT_EMPTY, '123x432',  InvalidValueException::class, '~^(\d+)$~'],
+
+            [_simpleType::STRING_URl, '',  EmptyValueException::class],
+            [_simpleType::STRING_URl, 'sfsdfsd',  InvalidValueException::class],
 
 
         ];
