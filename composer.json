@@ -17,7 +17,7 @@
   },
   "minimum-stability": "dev",
   "scripts": {
-    "test": "vendor/bin/phpunit tests --fail-on-risky"
+    "test": "vendor/bin/phpunit tests --fail-on-risky  --display-warnings"
   },
   "authors": [
     {
