@@ -15,6 +15,7 @@ class _simple extends _struct
     function validate(mixed $value, string $path = '')
     {
         if (!$this->nullAllowed && is_null($value)) {
+            //@todo тут та еще путаница, потому что есть _simpleType::NULL
             throw new NullNotAllowedException($path);
         } elseif ($this->nullAllowed && is_null($value)) {
             return;

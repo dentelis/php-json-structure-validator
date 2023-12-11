@@ -14,6 +14,7 @@ enum _simpleType
     case STRING_URl;
     case BOOL;
     case FLOAT;
+    case NULL;
 
     public function validate(mixed $value, string $path = '', ?string $regexp = null)
     {
@@ -40,6 +41,7 @@ enum _simpleType
                 break;
             case self::INT:
             case self::BOOL:
+            case self::NULL:
             default:
                 if ($this->getType() === gettype($value)) {
                     break;
@@ -59,6 +61,7 @@ enum _simpleType
             self::STRING_URl => 'string',
             self::BOOL => 'boolean',
             self::FLOAT => 'double',
+            self::NULL => 'NULL', //really?
         };
     }
 }

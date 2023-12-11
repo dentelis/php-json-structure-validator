@@ -49,6 +49,8 @@ final class SimpleTypeValidateTest extends TestCase
             [_simpleType::STRING_NOT_EMPTY, '123456', '~^(\d+)$~'],
 
             [_simpleType::STRING_URl, 'https://entelis.team'],
+
+            [_simpleType::NULL, null]
         ];
     }
 
