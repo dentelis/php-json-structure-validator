@@ -10,6 +10,7 @@ use EntelisTeam\Validator\Exception\InvalidValueException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 #[
     CoversClass(_simpleType::class),
@@ -54,19 +55,6 @@ final class SimpleTypeValidateTest extends TestCase
         ];
     }
 
-
-    #[DataProvider('SuccessProvider')]
-    public function testSuccess(_simpleType $type, mixed $value, ?string $regexp = null): void
-    {
-        try {
-            $type->validate($value, '', $regexp);
-        } catch (\Throwable $e) {
-            $this->assertNull($e);
-        }
-        $this->expectNotToPerformAssertions();
-    }
-
-
     public static function FailProvider(): array
     {
         return [
@@ -106,7 +94,7 @@ final class SimpleTypeValidateTest extends TestCase
             [_simpleType::STRING, false, InvalidTypeException::class],
             [_simpleType::STRING, 100.1, InvalidTypeException::class],
 
-            [_simpleType::STRING, '123x432',  InvalidValueException::class, '~^(\d+)$~'],
+            [_simpleType::STRING, '123x432', InvalidValueException::class, '~^(\d+)$~'],
 
             [_simpleType::STRING_NOT_EMPTY, 1, InvalidTypeException::class],
             [_simpleType::STRING_NOT_EMPTY, -1, InvalidTypeException::class],
@@ -114,22 +102,34 @@ final class SimpleTypeValidateTest extends TestCase
             [_simpleType::STRING_NOT_EMPTY, true, InvalidTypeException::class],
             [_simpleType::STRING_NOT_EMPTY, false, InvalidTypeException::class],
             [_simpleType::STRING_NOT_EMPTY, 100.1, InvalidTypeException::class],
-            [_simpleType::STRING_NOT_EMPTY, '',  EmptyValueException::class],
-            [_simpleType::STRING_NOT_EMPTY, '123x432',  InvalidValueException::class, '~^(\d+)$~'],
+            [_simpleType::STRING_NOT_EMPTY, '', EmptyValueException::class],
+            [_simpleType::STRING_NOT_EMPTY, '123x432', InvalidValueException::class, '~^(\d+)$~'],
 
-            [_simpleType::STRING_URl, '',  EmptyValueException::class],
-            [_simpleType::STRING_URl, 'sfsdfsd',  InvalidValueException::class],
+            [_simpleType::STRING_URl, '', EmptyValueException::class],
+            [_simpleType::STRING_URl, 'sfsdfsd', InvalidValueException::class],
 
 
         ];
     }
+
+    #[DataProvider('SuccessProvider')]
+    public function testSuccess(_simpleType $type, mixed $value, ?string $regexp = null): void
+    {
+        try {
+            $type->validate($value, '', $regexp);
+        } catch (Throwable $e) {
+            $this->assertNull($e);
+        }
+        $this->expectNotToPerformAssertions();
+    }
+
     #[DataProvider('FailProvider')]
     public function testFailure(_simpleType $type, mixed $value, string $exceptionClass, ?string $regexp = null): void
     {
         $e = null;
         try {
-            $type->validate($value, '',$regexp);
-        } catch (\Throwable $e) {
+            $type->validate($value, '', $regexp);
+        } catch (Throwable $e) {
             $this->assertInstanceOf($exceptionClass, $e);
         } finally {
             $this->assertNotNull($e, sprintf('Value "%s" with regexp "%s" MUST throw "%s" exception',
@@ -141,7 +141,6 @@ final class SimpleTypeValidateTest extends TestCase
             ));
         }
     }
-
 
 
 }

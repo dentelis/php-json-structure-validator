@@ -46,17 +46,6 @@ final class ObjectPropertyArrayTypeUnionTest extends TestCase
         return (object)['type' => $type, 'data' => $data];
     }
 
-
-    protected function check(_struct $struct, mixed $data): void
-    {
-        try {
-            $struct->validate($data);
-        } catch (Throwable $e) {
-            $this->assertNull($e);
-        }
-        $this->expectNotToPerformAssertions();
-    }
-
     /**
      * проверяем работу нелинейныйх структур вида
      * [
@@ -89,6 +78,16 @@ final class ObjectPropertyArrayTypeUnionTest extends TestCase
         ]);
 
         $this->check($struct, $data);
+    }
+
+    protected function check(_struct $struct, mixed $data): void
+    {
+        try {
+            $struct->validate($data);
+        } catch (Throwable $e) {
+            $this->assertNull($e);
+        }
+        $this->expectNotToPerformAssertions();
     }
 
 

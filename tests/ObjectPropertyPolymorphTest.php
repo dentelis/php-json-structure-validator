@@ -150,7 +150,7 @@ final class ObjectPropertyPolymorphTest extends TestCase
     {
         try {
             $struct->validate($data);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->assertNull($e);
         }
         $this->expectNotToPerformAssertions();
@@ -186,7 +186,7 @@ final class ObjectPropertyPolymorphTest extends TestCase
                 'years' => $yearsStruct,
                 'years' => $yearsStruct,
                 'name' => $nameStruct,
-                default => throw new \Exception('Unexpected match value'),
+                default => throw new Exception('Unexpected match value'),
             };
         };
 
@@ -228,7 +228,7 @@ final class ObjectPropertyPolymorphTest extends TestCase
                 'color' => $colorStruct,
                 'years' => $yearsStruct,
                 'name' => $nameStruct,
-                default => throw new \Exception('Unexpected match value'),
+                default => throw new Exception('Unexpected match value'),
             };
         };
 

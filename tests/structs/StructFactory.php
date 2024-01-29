@@ -26,20 +26,20 @@ class StructFactory
         ]);
     }
 
-    static function carClass(): _object
-    {
-        return new _object([
-            'model' => new _property_simple(_simpleType::STRING_NOT_EMPTY, false),
-            'color' => new _property_object(static::colorClass(), false),
-        ]);
-    }
-
     static function colorClass(): _object
     {
         return new _object([
             'r' => new _property_simple(_simpleType::INT, false),
             'g' => new _property_simple(_simpleType::INT, false),
             'b' => new _property_simple(_simpleType::INT, false),
+        ]);
+    }
+
+    static function carClass(): _object
+    {
+        return new _object([
+            'model' => new _property_simple(_simpleType::STRING_NOT_EMPTY, false),
+            'color' => new _property_object(static::colorClass(), false),
         ]);
     }
 

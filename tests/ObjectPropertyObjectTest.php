@@ -25,7 +25,7 @@ final class ObjectPropertyObjectTest extends TestCase
 
         try {
             $struct->validate($data);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->assertNull($e);
         }
         $this->expectNotToPerformAssertions();

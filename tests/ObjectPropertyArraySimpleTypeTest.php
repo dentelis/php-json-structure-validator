@@ -1,12 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use EntelisTeam\Validator\Enum\_simpleType;
-use EntelisTeam\Validator\Structure\_object;
-use EntelisTeam\Validator\Structure\_property_array;
-use EntelisTeam\Validator\Structure\_property_object;
-use EntelisTeam\Validator\Structure\_property_simple;
-use EntelisTeam\Validator\Structure\_simple;
 use EntelisTeam\Validator\Structure\_struct;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

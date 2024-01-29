@@ -11,9 +11,11 @@ use EntelisTeam\Validator\Structure\_property_object;
 use EntelisTeam\Validator\Structure\_property_simple;
 use EntelisTeam\Validator\Structure\_simple;
 use EntelisTeam\Validator\Structure\_struct;
+use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use tests\structs\StructFactory;
+use Throwable;
 
 final class ObjectPropertyPolymorphNullTest extends TestCase
 {
@@ -111,7 +113,7 @@ final class ObjectPropertyPolymorphNullTest extends TestCase
                 'color' => $colorStruct,
                 'years' => $yearsStruct,
                 'name' => $nameStruct,
-                default => throw new \Exception('Unexpected match value'),
+                default => throw new Exception('Unexpected match value'),
             };
         };
 
@@ -128,7 +130,7 @@ final class ObjectPropertyPolymorphNullTest extends TestCase
     {
         try {
             $struct->validate($data);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->assertNull($e);
         }
         $this->expectNotToPerformAssertions();
@@ -164,7 +166,7 @@ final class ObjectPropertyPolymorphNullTest extends TestCase
                 'color' => $colorStruct,
                 'years' => $yearsStruct,
                 'name' => $nameStruct,
-                default => throw new \Exception('Unexpected match value'),
+                default => throw new Exception('Unexpected match value'),
             };
         };
 

@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use tests\structs\StructFactory;
 use PHPUnit\Framework\TestCase;
+use tests\structs\StructFactory;
 
 final class ObjectSimpleTest extends TestCase
 {
@@ -15,7 +15,7 @@ final class ObjectSimpleTest extends TestCase
 
         try {
             $struct->validate($data);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->assertNull($e);
         }
         $this->expectNotToPerformAssertions();
