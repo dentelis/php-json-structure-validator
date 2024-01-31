@@ -6,27 +6,16 @@ use Closure;
 use Dentelis\Validator\Exception\ValidationException;
 use Dentelis\Validator\TypeInterface;
 
-class StringType implements TypeInterface
+class StringType extends AbstractType implements TypeInterface
 {
 
     protected bool $nullAllowed = false;
-
-    /**
-     * @var Closure[]
-     */
-    protected array $customConditions = [];
 
     public function __construct()
     {
         $this->addCustom(function ($value) {
             return ((is_null($value) && $this->nullAllowed) || gettype($value) === 'string') ?: throw new ValidationException('type', 'string', gettype($value));
         }, false);
-    }
-
-    public function addCustom(Closure $closure, bool $skipIfNull = true): self
-    {
-        $this->customConditions[] = [$closure, $skipIfNull];
-        return $this;
     }
 
     /**
@@ -94,27 +83,5 @@ class StringType implements TypeInterface
         });
     }
 
-    /**
-     * @param mixed $value
-     * @param array $path
-     * @return void
-     * @todo подумать - может быть вынести в абстракт выше
-     */
-    public function validate(mixed $value, array $path = [])
-    {
-        foreach ($this->customConditions as list($closure, $skipIfNull)) {
-            if (is_null($value) && $skipIfNull) {
-                continue;
-            };
-            try {
-                $result = $closure($value);
-                if ($result !== true) {
-                    throw new ValidationException('Something', 'something', $value);
-                }
-            } catch (ValidationException $exception) {
-                $exception->setPath($path);
-                throw $exception;
-            }
-        }
-    }
+
 }

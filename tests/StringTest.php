@@ -25,6 +25,9 @@ final class StringTest extends TestCase
             ['123456', (new StringType())->assertRegexp('~^(\d+)$~')],
             ['foo', (new StringType())->assertLength(3, 3)],
             ['foo', (new StringType())->assertLength(0, 100)],
+            ['bar', (new StringType())->assertValueIn(['foo', 'bar'])],
+            ['bar', (new StringType())->assertValueIn(['bar'])],
+            ['', (new StringType())->assertValueIn(['bar', ''])],
             ['user@example.com', (new StringType())->assertEmail()],
             ['https://example.com', (new StringType())->assertUrl()],
             [null, (new StringType())->setNullAllowed()],
@@ -32,6 +35,8 @@ final class StringTest extends TestCase
             [null, (new StringType())->setNullAllowed()->assertUrl()],
             [null, (new StringType())->setNullAllowed()->assertRegexp('~^(\d+)$~')],
             [null, (new StringType())->setNullAllowed()->assertLength(3, 3)],
+            [null, (new StringType())->setNullAllowed()->assertValueIn([])],
+            [null, (new StringType())->setNullAllowed()->assertValueIn(['foo'])],
         ];
     }
 
@@ -55,7 +60,9 @@ final class StringTest extends TestCase
             ['', (new StringType())->assertEmail()],
             ['example.com', (new StringType())->assertUrl()],
             ['', (new StringType())->assertUrl()],
-            ['user@example.com', (new StringType())->assertEmail()->assertLength(max:6)]
+            ['user@example.com', (new StringType())->assertEmail()->assertLength(max: 6)],
+            ['foo', (new StringType())->assertValueIn(['bar'])],
+            ['foo', (new StringType())->assertValueIn([])],
         ];
 
     }
