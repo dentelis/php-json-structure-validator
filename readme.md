@@ -1,4 +1,4 @@
-# LBAF/Validator
+# dentelis/validator
 
 Validator is a PHP library for validation data structure.
 
@@ -7,7 +7,7 @@ Validator is a PHP library for validation data structure.
 Use the package manager [composer](https://getcomposer.org/) to install Validator.
 
 ```bash
-composer require entelisteam/validator
+composer require dentelis/validator
 ```
 
 ## Usage
@@ -61,12 +61,18 @@ Please make sure to update tests as appropriate.
 
 ## простой-тип (возможно разворачиваем в пачку разных объектов string/bool/etc)
    - реальный_тип (int/float/string/... )
-   - расширенные условия? 
+   - расширенные условия 
+     - все: возможные значения (перечисления)
+     - все: возможные значения не содержат (перечисления)
+     - строка: удовлетворяет регулярке
+     - строка: не пустая
+     - строка: email / url / etc
    - nullable?
 
 ## объект
   - набор свойств
   - nullable?
+  - расширенные условия - функция валидатор
 
 ### свойство объекта
   - название

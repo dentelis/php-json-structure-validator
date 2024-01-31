@@ -1,5 +1,5 @@
 {
-  "name": "entelisteam/validator",
+  "name": "dentelis/validator",
   "description": "Data structure validation framework",
   "type": "library",
   "require": {
