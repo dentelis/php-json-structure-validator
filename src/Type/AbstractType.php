@@ -2,16 +2,18 @@
 
 namespace Dentelis\Validator\Type;
 
+use Closure;
 use Dentelis\Validator\Exception\ValidationException;
 use Dentelis\Validator\TypeInterface;
-use Closure;
 
 abstract class AbstractType implements TypeInterface
 {
     /**
      * @var Closure[]
      */
-    protected array $customConditions = [];
+    private array $customConditions = [];
+
+    private bool $nullAllowed = false;
 
     public function addCustom(Closure $closure, bool $skipIfNull = true): self
     {
@@ -30,7 +32,7 @@ abstract class AbstractType implements TypeInterface
         foreach ($this->customConditions as list($closure, $skipIfNull)) {
             if (is_null($value) && $skipIfNull) {
                 continue;
-            };
+            }
             try {
                 $result = $closure($value);
                 if ($result !== true) {
@@ -41,6 +43,21 @@ abstract class AbstractType implements TypeInterface
                 throw $exception;
             }
         }
+    }
+
+    protected function getNullAllowed(): bool
+    {
+        return $this->nullAllowed;
+    }
+
+    /**
+     * @param bool $value Допустим ли null в качестве значения
+     * @return $this
+     */
+    public function setNullAllowed(): self
+    {
+        $this->nullAllowed = true;
+        return $this;
     }
 
 }

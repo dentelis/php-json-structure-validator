@@ -2,31 +2,17 @@
 
 namespace Dentelis\Validator\Type;
 
-use Closure;
 use Dentelis\Validator\Exception\ValidationException;
 use Dentelis\Validator\TypeInterface;
 
 class StringType extends AbstractType implements TypeInterface
 {
 
-    protected bool $nullAllowed = false;
-
     public function __construct()
     {
         $this->addCustom(function ($value) {
-            return ((is_null($value) && $this->nullAllowed) || gettype($value) === 'string') ?: throw new ValidationException('type', 'string', gettype($value));
+            return ((is_null($value) && $this->getNullAllowed()) || gettype($value) === 'string') ?: throw new ValidationException('type', 'string', gettype($value));
         }, false);
-    }
-
-    /**
-     * @param bool $value Допустим ли null в качестве значения
-     * @return $this
-     * @todo вынести вверх
-     */
-    public function setNullAllowed(): self
-    {
-        $this->nullAllowed = true;
-        return $this;
     }
 
     public function assertLength(?int $min = null, ?int $max = null): self
@@ -82,6 +68,5 @@ class StringType extends AbstractType implements TypeInterface
             return (filter_var($value, FILTER_VALIDATE_EMAIL) !== false) ?: (throw new ValidationException('string content', 'email', $value));
         });
     }
-
 
 }
