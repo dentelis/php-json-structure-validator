@@ -61,7 +61,7 @@ abstract class AbstractType implements TypeInterface
                 continue;
             }
             try {
-                $result = $closure($value);
+                $result = $closure($value, $path);
                 if ($result !== true) {
                     throw new ValidationException('Custom assert', 'true', $result);
                 }

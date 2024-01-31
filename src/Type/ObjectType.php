@@ -5,7 +5,6 @@ namespace Dentelis\Validator\Type;
 use Closure;
 use Dentelis\Validator\Exception\ValidationException;
 use Dentelis\Validator\TypeInterface;
-use Override;
 use RuntimeException;
 
 class ObjectType extends AbstractType implements TypeInterface
@@ -35,6 +34,22 @@ class ObjectType extends AbstractType implements TypeInterface
             }
         });
 
+        $this->addCustom(function ($value, $path) {
+            foreach ($this->properties as $propertyName => [$typeOrClosure, $mandatory]) {
+                $type = is_callable($typeOrClosure) ? $typeOrClosure($value) : $typeOrClosure;
+                if (!($type instanceof TypeInterface)) {
+                    throw new RuntimeException('Property type must be instance of TypeInterface');
+                }
+                $propertyExists = array_key_exists($propertyName, (array)$value);
+                if ($propertyExists) {
+                    $type->validate($value->$propertyName, [...$path, $propertyName]);
+                } elseif ($mandatory === true) {
+                    throw new ValidationException($propertyName, 'value', 'not found', [...$path, $propertyName]);
+                }
+            }
+            return true;
+        });
+
     }
 
     protected function getExtensible(): bool
@@ -58,33 +73,6 @@ class ObjectType extends AbstractType implements TypeInterface
     {
         $this->isExtensible = true;
         return $this;
-    }
-
-    #[Override]
-    /**
-     * @todo подумать - может это тоже можно в конструктор пихнуть через addCustom?
-     */
-    public function validate(mixed $value, array $path = []): bool
-    {
-        //вызываем базовую валидацию
-        parent::validate($value, $path);
-
-        //проверяем все определенные свойства
-        if (!is_null($value)) {
-            foreach ($this->properties as $propertyName => [$typeOrClosure, $mandatory]) {
-                $type = is_callable($typeOrClosure) ? $typeOrClosure($value) : $typeOrClosure;
-                if (!($type instanceof TypeInterface)) {
-                    throw new RuntimeException('Property type must be instance of TypeInterface');
-                }
-                $propertyExists = array_key_exists($propertyName, (array)$value);
-                if ($propertyExists) {
-                    $type->validate($value->$propertyName, [...$path, $propertyName]);
-                } elseif ($mandatory === true) {
-                    throw new ValidationException($propertyName, 'value', 'not found', [...$path, $propertyName]);
-                }
-            }
-        }
-        return true;
     }
 
 }
