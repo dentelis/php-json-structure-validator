@@ -74,7 +74,7 @@ final class IntegerTest extends TestCase
         } catch (Throwable $e) {
             $this->assertInstanceOf(Throwable::class, $e);
         } finally {
-            $this->assertNotNull($e, sprintf('Value <%s> MUST throw an exception', ($value instanceof Stringable ? $value : '...')));
+            $this->assertNotNull($e, sprintf('Value <%s> MUST throw an exception', (is_string($value) || $value instanceof Stringable ? $value : '...')));
         }
     }
 

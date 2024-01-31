@@ -33,7 +33,7 @@ abstract class AbstractType implements TypeInterface
         return $this;
     }
 
-    private function getNullAllowed(): bool
+    protected function getNullAllowed(): bool
     {
         return $this->nullAllowed;
     }

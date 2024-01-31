@@ -14,10 +14,10 @@ class ValidationException extends Exception
         public array $path = [])
     {
         parent::__construct(sprintf(
-            'Validation %s failed: <%s> expected, but <%s> found.',
+            'Validation of %s failed: "%s" expected, but "%s" found.',
             $checked,
-            ($expected instanceof Stringable ? $expected : '...'),
-            ($actual instanceof Stringable ? $actual : '...'),
+            (is_scalar($expected) || $expected instanceof Stringable ? $expected : '...'),
+            (is_scalar($actual) || $actual instanceof Stringable ? $actual : '...'),
         ));
     }
 
