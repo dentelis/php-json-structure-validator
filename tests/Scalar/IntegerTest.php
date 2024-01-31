@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace tests;
+namespace tests\Scalar;
 
 use Dentelis\Validator\Type\IntegerType;
 use Dentelis\Validator\TypeInterface;
@@ -21,6 +21,7 @@ final class IntegerTest extends TestCase
     {
         return [
             [0, (new IntegerType())],
+            [1, (new IntegerType())->assertPositive()],
             [1000, (new IntegerType())],
             [-1000, (new IntegerType())],
             [100, (new IntegerType())->assertInterval(0, 100)],
@@ -73,7 +74,7 @@ final class IntegerTest extends TestCase
         } catch (Throwable $e) {
             $this->assertInstanceOf(Throwable::class, $e);
         } finally {
-            $this->assertNotNull($e, sprintf('Value <%s> MUST throw an exception', (is_string($value) || $value instanceof Stringable ? $value : '...')));
+            $this->assertNotNull($e, sprintf('Value <%s> MUST throw an exception', (is_scalar($value) || $value instanceof Stringable ? $value : '...')));
         }
     }
 

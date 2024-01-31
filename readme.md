@@ -1,6 +1,6 @@
 # dentelis/validator
 
-Validator is a PHP library for validation data structure.
+Validator is a PHP library for validation data structure received from json_decode.
 
 ## Specific
 The library was made to test json compatible data structures. Arrays with keys are not supported.
@@ -114,3 +114,5 @@ nullable вероятно перемещаем в расширенные тож�
 ? обдумать - не останавливаться на первом расхождении
 
 ! перевод phpdoc на английский
+
+! генератор структуры из класса (+подумать что делать для массива)

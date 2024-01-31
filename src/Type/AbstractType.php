@@ -12,12 +12,11 @@ use RuntimeException;
  */
 abstract class AbstractType implements TypeInterface
 {
+    private bool $nullAllowed = false;
     /**
      * @var Closure[]
      */
     private array $customConditions = [];
-
-    private bool $nullAllowed = false;
 
     public function __construct(?string $requiredType = null)
     {
@@ -28,13 +27,13 @@ abstract class AbstractType implements TypeInterface
         }
     }
 
-    public function addCustom(Closure $closure, bool $skipIfNull = true): self
+    public final function addCustom(Closure $closure, bool $skipIfNull = true): self
     {
         $this->customConditions[] = [$closure, $skipIfNull];
         return $this;
     }
 
-    protected function getNullAllowed(): bool
+    protected final function getNullAllowed(): bool
     {
         return $this->nullAllowed;
     }
@@ -43,7 +42,7 @@ abstract class AbstractType implements TypeInterface
      * @param bool $value Допустим ли null в качестве значения
      * @return $this
      */
-    public function setNullAllowed(): self
+    public final function setNullAllowed(): self
     {
         $this->nullAllowed = true;
         return $this;
@@ -55,7 +54,7 @@ abstract class AbstractType implements TypeInterface
      * @return void
      * @throws ValidationException
      */
-    public function validate(mixed $value, array $path = [])
+    public function validate(mixed $value, array $path = []): bool
     {
         foreach ($this->customConditions as list($closure, $skipIfNull)) {
             if (is_null($value) && $skipIfNull) {
@@ -71,6 +70,7 @@ abstract class AbstractType implements TypeInterface
                 throw $exception;
             }
         }
+        return true;
     }
 
     public function assertValueIn(array $values): self
@@ -81,7 +81,7 @@ abstract class AbstractType implements TypeInterface
             }
         }
         return $this->addCustom(function ($value) use ($values) {
-            return in_array($value, $values) ?: throw new ValidationException('value', 'from array(...)', $value);
+            return in_array($value, $values) ?: throw new ValidationException('value', '...', $value);
         });
     }
 

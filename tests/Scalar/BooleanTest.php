@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace tests;
+namespace tests\Scalar;
 
 use Dentelis\Validator\Type\BooleanType;
 use Dentelis\Validator\TypeInterface;

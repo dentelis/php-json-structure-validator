@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace tests;
+namespace tests\Scalar;
 
 use Dentelis\Validator\Type\FloatType;
 use Dentelis\Validator\TypeInterface;
@@ -23,6 +23,7 @@ final class FloatTest extends TestCase
             [1.1, (new FloatType())],
             [0.0, (new FloatType())],
             [-1.1, (new FloatType())],
+            [0.01, (new FloatType())->assertPositive()],
             [100.0, (new FloatType())->assertInterval(0, 100)],
             [100.0, (new FloatType())->assertInterval(0, 1000)],
             [-1000.0, (new FloatType())->assertInterval(-1000, 1000)],

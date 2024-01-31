@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace tests;
+namespace tests\Scalar;
 
 use Dentelis\Validator\Type\StringType;
 use Dentelis\Validator\TypeInterface;
@@ -91,7 +91,7 @@ final class StringTest extends TestCase
         } catch (Throwable $e) {
             $this->assertInstanceOf(Throwable::class, $e);
         } finally {
-            $this->assertNotNull($e, sprintf('Value <%s> MUST throw an exception', (is_string($value) || $value instanceof Stringable ? $value : '...')));
+            $this->assertNotNull($e, sprintf('Value <%s> MUST throw an exception', (is_scalar($value) || $value instanceof Stringable ? $value : '...')));
         }
     }
 
