@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+namespace tests\old;
+
 use EntelisTeam\Validator\Enum\_simpleType;
 use EntelisTeam\Validator\Structure\_object;
 use EntelisTeam\Validator\Structure\_property_array;
@@ -10,7 +12,7 @@ use EntelisTeam\Validator\Structure\_simple;
 use EntelisTeam\Validator\Structure\_struct;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use tests\structs\StructFactory;
+use tests\old\structs\StructFactory;
 
 final class ObjectPropertyArrayTypeUnionTest extends TestCase
 {

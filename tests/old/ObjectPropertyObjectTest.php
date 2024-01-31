@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
+namespace tests\old;
+
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use tests\structs\StructFactory;
+use tests\old\structs\StructFactory;
 
 final class ObjectPropertyObjectTest extends TestCase
 {

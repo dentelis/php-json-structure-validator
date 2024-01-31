@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+namespace tests\old;
+
 use EntelisTeam\Validator\Enum\_simpleType;
 use EntelisTeam\Validator\Structure\_object;
 use EntelisTeam\Validator\Structure\_polymorph;
@@ -9,11 +11,13 @@ use EntelisTeam\Validator\Structure\_property_object;
 use EntelisTeam\Validator\Structure\_property_simple;
 use EntelisTeam\Validator\Structure\_simple;
 use EntelisTeam\Validator\Structure\_struct;
+use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use tests\structs\StructFactory;
+use tests\old\structs\StructFactory;
+use Throwable;
 
-final class ObjectPropertyPolymorphTest extends TestCase
+final class ObjectPropertyPolymorphNullTest extends TestCase
 {
 
 
@@ -32,6 +36,12 @@ final class ObjectPropertyPolymorphTest extends TestCase
                     ]
                 ]
             ],
+            [
+                'data' => (object)[
+                    'title' => 'bmw',
+                    'details' => null,
+                ]
+            ],
         ];
     }
 
@@ -44,6 +54,12 @@ final class ObjectPropertyPolymorphTest extends TestCase
     {
         $color = (object)['r' => 0, 'g' => 0, 'b' => 10];
         return [
+            [
+                'data' => (object)[
+                    'title' => 'bmw',
+                    'details' => null,
+                ]
+            ],
             [
                 'data' => (object)[
                     'title' => 'bmw',
@@ -60,43 +76,6 @@ final class ObjectPropertyPolymorphTest extends TestCase
                 'data' => (object)[
                     'title' => 'bmw',
                     'details' => static::getComplexStruct('name', 'Dim'),
-                ]
-            ],
-            [
-                'data' => (object)[
-                    'title' => 'bmw',
-                    'details' => static::getComplexStruct('name', 'foo bar'),
-                ]
-            ],
-        ];
-    }
-
-    public static function ComplexBadPropertyProvider(): array
-    {
-        $color = (object)['r' => 0, 'g' => 0, 'b' => 10];
-        return [
-            [
-                'data' => (object)[
-                    'title' => 'bmw',
-                    'details2' => static::getComplexStruct('color', $color),
-                ]
-            ],
-            [
-                'data' => (object)[
-                    'title' => 'bmw',
-                    'details' => static::getComplexStruct('years', 'ddd'),
-                ]
-            ],
-            [
-                'data' => (object)[
-                    'title' => 'bmw',
-                    'details' => static::getComplexStruct('name', [2022, 2023]),
-                ]
-            ],
-            [
-                'data' => (object)[
-                    'title' => 'bmw',
-                    'details' => null,
                 ]
             ],
         ];
@@ -129,6 +108,7 @@ final class ObjectPropertyPolymorphTest extends TestCase
         ]);
 
         $f = function (mixed $data) use ($colorStruct, $yearsStruct, $nameStruct) {
+            if (is_null($data)) return null;
             return match ($data?->type) {
                 'color' => $colorStruct,
                 'years' => $yearsStruct,
@@ -139,7 +119,7 @@ final class ObjectPropertyPolymorphTest extends TestCase
 
         $struct = new _object([
             'title' => new _property_simple(_simpleType::STRING_NOT_EMPTY, false),
-            'details' => new _property_array(new _polymorph($f), false, true),
+            'details' => new _property_array(new _polymorph($f), true, true),
         ]);
 
         $this->check($struct, $data);
@@ -181,9 +161,9 @@ final class ObjectPropertyPolymorphTest extends TestCase
         ]);
 
         $f = function (mixed $data) use ($colorStruct, $yearsStruct, $nameStruct) {
+            if (is_null($data)) return null;
             return match ($data?->type) {
                 'color' => $colorStruct,
-                'years' => $yearsStruct,
                 'years' => $yearsStruct,
                 'name' => $nameStruct,
                 default => throw new Exception('Unexpected match value'),
@@ -192,59 +172,12 @@ final class ObjectPropertyPolymorphTest extends TestCase
 
         $struct = new _object([
             'title' => new _property_simple(_simpleType::STRING_NOT_EMPTY, false),
-            'details' => new _property_object(new _polymorph($f), false),
+            'details' => new _property_object(new _polymorph($f), true),
         ]);
 
         $this->check($struct, $data);
 
     }
 
-    /**
-     * проверяем работу нелинейныйх структур вида
-     *   data : { type:"color", data: ColorObject }
-     *   data :  { type:"model", data: ModelObject }
-     */
-    #[DataProvider('ComplexBadPropertyProvider')]
-    public function testBadComplexProperty(object $data): void
-    {
-
-        $colorStruct = new _object([
-            'type' => new _property_simple(simpleType: _simpleType::STRING, nullAllowed: false, possibleValues: ['color']),
-            'data' => new _property_object(StructFactory::colorClass(), false),
-        ]);
-
-        $yearsStruct = new _object([
-            'type' => new _property_simple(simpleType: _simpleType::STRING, nullAllowed: false, possibleValues: ['years']),
-            'data' => new _property_array(new _simple(_simpleType::INT, false), false, false)
-        ]);
-
-        $nameStruct = new _object([
-            'type' => new _property_simple(simpleType: _simpleType::STRING, nullAllowed: false, possibleValues: ['name']),
-            'data' => new _property_simple(_simpleType::STRING_NOT_EMPTY, false),
-        ]);
-
-        $f = function (mixed $data) use ($colorStruct, $yearsStruct, $nameStruct) {
-            return match ($data?->type) {
-                'color' => $colorStruct,
-                'years' => $yearsStruct,
-                'name' => $nameStruct,
-                default => throw new Exception('Unexpected match value'),
-            };
-        };
-
-        $struct = new _object([
-            'title' => new _property_simple(_simpleType::STRING_NOT_EMPTY, false),
-            'details' => new _property_object(new _polymorph($f), false),
-        ]);
-
-        $this->checkFails($struct, $data);
-
-    }
-
-    protected function checkFails(_struct $struct, mixed $data): void
-    {
-        $this->expectExceptionCode(0);
-        $struct->validate($data);
-    }
 
 }

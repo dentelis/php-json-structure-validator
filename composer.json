@@ -7,7 +7,8 @@
   },
   "autoload": {
     "psr-4": {
-      "EntelisTeam\\Validator\\": "src/Validator/"
+      "EntelisTeam\\Validator\\": "src/Validator/",
+      "Dentelis\\Validator\\": "src/"
     }
   },
   "autoload-dev": {
