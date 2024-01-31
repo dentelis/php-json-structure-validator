@@ -2,69 +2,119 @@
 
 namespace Dentelis\Validator\Type;
 
+use Closure;
+use Dentelis\Validator\Exception\ValidationException;
 use Dentelis\Validator\TypeInterface;
 
 class StringType implements TypeInterface
 {
 
     protected bool $nullAllowed = false;
-    protected bool $emptyAllowed = false;
 
     /**
-     * @var string[]
+     * @var Closure[]
      */
-    protected array $regexpConditions = [];
-
     protected array $customConditions = [];
+
+    public function __construct()
+    {
+        $this->addCustom(function ($value) {
+            return ((is_null($value) && $this->nullAllowed) || gettype($value) === 'string') ?: throw new ValidationException('type', 'string', gettype($value));
+        }, false);
+    }
+
+    public function addCustom(Closure $closure, bool $skipIfNull = true): self
+    {
+        $this->customConditions[] = [$closure, $skipIfNull];
+        return $this;
+    }
 
     /**
      * @param bool $value Допустим ли null в качестве значения
-     * @todo переделать на вызов addCustom
      * @return $this
+     * @todo вынести вверх
      */
-    public function setNullAllowed(bool $value): self
+    public function setNullAllowed(): self
     {
-        $this->nullAllowed = $value;
-        return $this;
-    }
-
-    /**
-     * @param bool $value Допустима ли пустая строка в качестве значения
-     * @todo переделать на вызов addCustom
-     * @return $this
-     */
-    public function setEmptyAllowed(bool $value): self
-    {
-        $this->emptyAllowed = $value;
-        return $this;
-    }
-
-    /**
-     * @param string $regexp регулярное выражение которому должна удовлетворять строка
-     * @todo переделать на вызов addCustom
-     * @return $this
-     */
-    public function assertRegexp(string $regexp): self
-    {
-        $this->regexpConditions[] = $regexp;
+        $this->nullAllowed = true;
         return $this;
     }
 
     public function assertLength(?int $min = null, ?int $max = null): self
     {
-        //@todo implement через addCustom
+        if (!is_null($min)) {
+            $this->addCustom(function ($value) use ($min) {
+                return mb_strlen($value) >= $min ?: throw new ValidationException('string length', '>= ' . $min, mb_strlen($value));
+            });
+        }
+        if (!is_null($max)) {
+            $this->addCustom(function ($value) use ($max) {
+                return mb_strlen($value) <= $max ?: throw new ValidationException('string length', '<= ' . $max, mb_strlen($value));
+            });
+        }
         return $this;
     }
 
-    //@todo подумать - может быть вынести в абстракт выше
-    public function addCustom(\Closure $closure, ?string $errorMessage = null): self
+    /**
+     * @todo возможно вынести на уровень выше
+     */
+    public function assertValueIn(array $values): self
     {
-        $this->customConditions[] = [$closure, $errorMessage];
-        return $this;
+        return $this->addCustom(function ($value) use ($values) {
+            return in_array($value, $values) ?: throw new ValidationException('string value', 'array(...)', $value);
+        });
     }
 
+    /**
+     * Требует чтобы строка содержала в себе валидный url
+     * @todo возможно переделать на filter_var('http://example.com', FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)
+     */
+    public function assertUrl(): self
+    {
+        return $this->assertRegexp('~^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$~', 'URL');
+    }
+
+    /**
+     * @param string $regexp регулярное выражение которому должна удовлетворять строка
+     */
+    public function assertRegexp(string $regexp, ?string $regexpTitle = null): self
+    {
+        return $this->addCustom(function ($value) use ($regexp, $regexpTitle) {
+            return preg_match($regexp, $value) === 1 ?: (throw new ValidationException('string match regexp', $regexpTitle ?? $regexp, $value));
+        });
+    }
+
+    /**
+     * Требует чтобы строка содержала в себе валидный email
+     */
+    public function assertEmail(): self
+    {
+        return $this->addCustom(function ($value) {
+            return (filter_var($value, FILTER_VALIDATE_EMAIL) !== false) ?: (throw new ValidationException('string content', 'email', $value));
+        });
+    }
+
+    /**
+     * @param mixed $value
+     * @param array $path
+     * @return void
+     * @todo подумать - может быть вынести в абстракт выше
+     */
     public function validate(mixed $value, array $path = [])
     {
-        // TODO: Implement validate() method.
+        foreach ($this->customConditions as list($closure, $skipIfNull)) {
+            if (is_null($value) && $skipIfNull) {
+                continue;
+            };
+            try {
+                $result = $closure($value);
+                if ($result !== true) {
+                    throw new ValidationException('Something', 'something', $value);
+                }
+            } catch (ValidationException $exception) {
+                $exception->setPath($path);
+                throw $exception;
+            }
+        }
     }
 }
