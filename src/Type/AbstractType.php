@@ -18,6 +18,26 @@ abstract class AbstractType implements TypeInterface
 
     private bool $nullAllowed = false;
 
+    public function __construct(?string $requiredType = null)
+    {
+        if (!is_null($requiredType)) {
+            $this->addCustom(function ($value) use ($requiredType) {
+                return ((is_null($value) && $this->getNullAllowed()) || gettype($value) === $requiredType) ?: throw new ValidationException('type', $requiredType, gettype($value));
+            }, false);
+        }
+    }
+
+    public function addCustom(Closure $closure, bool $skipIfNull = true): self
+    {
+        $this->customConditions[] = [$closure, $skipIfNull];
+        return $this;
+    }
+
+    private function getNullAllowed(): bool
+    {
+        return $this->nullAllowed;
+    }
+
     /**
      * @param mixed $value
      * @param array $path
@@ -33,7 +53,7 @@ abstract class AbstractType implements TypeInterface
             try {
                 $result = $closure($value);
                 if ($result !== true) {
-                    throw new ValidationException('Something', 'something', $value);
+                    throw new ValidationException('Custom assert', 'true', $result);
                 }
             } catch (ValidationException $exception) {
                 $exception->setPath($path);
@@ -50,17 +70,6 @@ abstract class AbstractType implements TypeInterface
         return $this->addCustom(function ($value) use ($values) {
             return in_array($value, $values) ?: throw new ValidationException('value', 'from array(...)', $value);
         });
-    }
-
-    public function addCustom(Closure $closure, bool $skipIfNull = true): self
-    {
-        $this->customConditions[] = [$closure, $skipIfNull];
-        return $this;
-    }
-
-    protected function getNullAllowed(): bool
-    {
-        return $this->nullAllowed;
     }
 
     /**

@@ -10,9 +10,7 @@ class StringType extends AbstractType implements TypeInterface
 
     public function __construct()
     {
-        $this->addCustom(function ($value) {
-            return ((is_null($value) && $this->getNullAllowed()) || gettype($value) === 'string') ?: throw new ValidationException('type', 'string', gettype($value));
-        }, false);
+        parent::__construct('string');
     }
 
     public function assertLength(?int $min = null, ?int $max = null): self

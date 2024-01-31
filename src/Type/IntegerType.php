@@ -10,9 +10,7 @@ class IntegerType extends AbstractType implements TypeInterface
 
     public function __construct()
     {
-        $this->addCustom(function ($value) {
-            return ((is_null($value) && $this->getNullAllowed()) || gettype($value) === 'integer') ?: throw new ValidationException('type', 'integer', gettype($value));
-        }, false);
+        parent::__construct('integer');
     }
 
     public function assertInterval(?int $min = null, ?int $max = null): self
