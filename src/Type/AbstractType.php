@@ -44,6 +44,9 @@ abstract class AbstractType implements TypeInterface
 
     public function assertValueIn(array $values): self
     {
+        if (in_array(null, $values)) {
+            $this->setNullAllowed();
+        }
         return $this->addCustom(function ($value) use ($values) {
             return in_array($value, $values) ?: throw new ValidationException('value', 'from array(...)', $value);
         });

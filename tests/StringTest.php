@@ -8,6 +8,8 @@ use Dentelis\Validator\TypeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Stringable;
+use Throwable;
 
 #[
     CoversClass(StringType::class),
@@ -27,6 +29,7 @@ final class StringTest extends TestCase
             ['foo', (new StringType())->assertLength(0, 100)],
             ['bar', (new StringType())->assertValueIn(['foo', 'bar'])],
             ['bar', (new StringType())->assertValueIn(['bar'])],
+            [null, (new StringType())->assertValueIn([null, 'foo'])],
             ['', (new StringType())->assertValueIn(['bar', ''])],
             ['user@example.com', (new StringType())->assertEmail()],
             ['https://example.com', (new StringType())->assertUrl()],
@@ -72,7 +75,7 @@ final class StringTest extends TestCase
     {
         try {
             $type->validate($value);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->assertNull($e);
         }
         $this->expectNotToPerformAssertions();
@@ -84,10 +87,10 @@ final class StringTest extends TestCase
         $e = null;
         try {
             $type->validate($value);
-        } catch (\Throwable $e) {
-            $this->assertInstanceOf(\Throwable::class, $e);
+        } catch (Throwable $e) {
+            $this->assertInstanceOf(Throwable::class, $e);
         } finally {
-            $this->assertNotNull($e, sprintf('Value <%s> MUST throw an exception', ($value instanceof \Stringable ? $value : '...')));
+            $this->assertNotNull($e, sprintf('Value <%s> MUST throw an exception', ($value instanceof Stringable ? $value : '...')));
         }
     }
 
