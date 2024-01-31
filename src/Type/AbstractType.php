@@ -6,6 +6,9 @@ use Closure;
 use Dentelis\Validator\Exception\ValidationException;
 use Dentelis\Validator\TypeInterface;
 
+/**
+ * @todo возможно это AbstractSimpleType
+ */
 abstract class AbstractType implements TypeInterface
 {
     /**
@@ -14,12 +17,6 @@ abstract class AbstractType implements TypeInterface
     private array $customConditions = [];
 
     private bool $nullAllowed = false;
-
-    public function addCustom(Closure $closure, bool $skipIfNull = true): self
-    {
-        $this->customConditions[] = [$closure, $skipIfNull];
-        return $this;
-    }
 
     /**
      * @param mixed $value
@@ -43,6 +40,19 @@ abstract class AbstractType implements TypeInterface
                 throw $exception;
             }
         }
+    }
+
+    public function assertValueIn(array $values): self
+    {
+        return $this->addCustom(function ($value) use ($values) {
+            return in_array($value, $values) ?: throw new ValidationException('value', 'from array(...)', $value);
+        });
+    }
+
+    public function addCustom(Closure $closure, bool $skipIfNull = true): self
+    {
+        $this->customConditions[] = [$closure, $skipIfNull];
+        return $this;
     }
 
     protected function getNullAllowed(): bool

@@ -31,16 +31,6 @@ class StringType extends AbstractType implements TypeInterface
     }
 
     /**
-     * @todo возможно вынести на уровень выше
-     */
-    public function assertValueIn(array $values): self
-    {
-        return $this->addCustom(function ($value) use ($values) {
-            return in_array($value, $values) ?: throw new ValidationException('string value', 'array(...)', $value);
-        });
-    }
-
-    /**
      * Требует чтобы строка содержала в себе валидный url
      * @todo возможно переделать на filter_var('http://example.com', FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)
      */
