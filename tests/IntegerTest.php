@@ -30,7 +30,6 @@ final class IntegerTest extends TestCase
             [50, (new IntegerType())->assertValueIn([0, 50, 100])],
             [50, (new IntegerType())->assertValueIn([50])],
             [null, (new IntegerType())->setNullAllowed()],
-            [null, (new IntegerType())->assertValueIn([40, null, 50])],
             [null, (new IntegerType())->setNullAllowed()->assertInterval(0, 100)],
         ];
     }

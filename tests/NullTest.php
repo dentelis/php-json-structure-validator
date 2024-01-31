@@ -21,7 +21,6 @@ final class NullTest extends TestCase
     {
         return [
             [null, (new NullType())],
-            [null, (new NullType())->assertValueIn([null])],
             [null, (new NullType())->setNullAllowed()],
         ];
     }

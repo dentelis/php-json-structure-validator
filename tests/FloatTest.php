@@ -30,7 +30,6 @@ final class FloatTest extends TestCase
             [50.0, (new FloatType())->assertValueIn([0, 50, 100])],
             [50.0, (new FloatType())->assertValueIn([50])],
             [null, (new FloatType())->setNullAllowed()],
-            [null, (new FloatType())->assertValueIn([40, null, 50])],
             [null, (new FloatType())->setNullAllowed()->assertInterval(0, 100)],
         ];
     }

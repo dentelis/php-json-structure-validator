@@ -29,7 +29,6 @@ final class StringTest extends TestCase
             ['foo', (new StringType())->assertLength(0, 100)],
             ['bar', (new StringType())->assertValueIn(['foo', 'bar'])],
             ['bar', (new StringType())->assertValueIn(['bar'])],
-            [null, (new StringType())->assertValueIn([null, 'foo'])],
             ['', (new StringType())->assertValueIn(['bar', ''])],
             ['user@example.com', (new StringType())->assertEmail()],
             ['https://example.com', (new StringType())->assertUrl()],

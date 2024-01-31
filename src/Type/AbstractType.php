@@ -5,6 +5,7 @@ namespace Dentelis\Validator\Type;
 use Closure;
 use Dentelis\Validator\Exception\ValidationException;
 use Dentelis\Validator\TypeInterface;
+use RuntimeException;
 
 /**
  * @todo возможно это AbstractSimpleType
@@ -39,6 +40,16 @@ abstract class AbstractType implements TypeInterface
     }
 
     /**
+     * @param bool $value Допустим ли null в качестве значения
+     * @return $this
+     */
+    public function setNullAllowed(): self
+    {
+        $this->nullAllowed = true;
+        return $this;
+    }
+
+    /**
      * @param mixed $value
      * @param array $path
      * @return void
@@ -64,22 +75,14 @@ abstract class AbstractType implements TypeInterface
 
     public function assertValueIn(array $values): self
     {
-        if (in_array(null, $values)) {
-            $this->setNullAllowed();
+        foreach ($values as $value) {
+            if (is_null($value)) {
+                throw new RuntimeException('Null is not possible value for assertValueIn. Use setNullAllowed() instead.');
+            }
         }
         return $this->addCustom(function ($value) use ($values) {
             return in_array($value, $values) ?: throw new ValidationException('value', 'from array(...)', $value);
         });
-    }
-
-    /**
-     * @param bool $value Допустим ли null в качестве значения
-     * @return $this
-     */
-    public function setNullAllowed(): self
-    {
-        $this->nullAllowed = true;
-        return $this;
     }
 
 }

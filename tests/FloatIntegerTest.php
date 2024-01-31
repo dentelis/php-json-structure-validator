@@ -41,7 +41,6 @@ final class FloatIntegerTest extends TestCase
             [50, (new FloatIntegerType())->assertValueIn([50])],
 
             [null, (new FloatIntegerType())->setNullAllowed()],
-            [null, (new FloatIntegerType())->assertValueIn([40, null, 50])],
             [null, (new FloatIntegerType())->setNullAllowed()->assertInterval(0, 100)],
         ];
     }
