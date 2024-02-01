@@ -74,22 +74,20 @@ abstract class AbstractType implements TypeInterface
         return true;
     }
 
-    public function assertValueIn(array $values): self
+    public function assertValue(mixed ...$expected): self
+    {
+        return $this->assertValueIn($expected, true);
+    }
+
+    public function assertValueIn(array $values, bool $strict = false): self
     {
         foreach ($values as $value) {
             if (is_null($value)) {
                 throw new RuntimeException('Null is not possible value for assertValueIn. Use setNullAllowed() instead.');
             }
         }
-        return $this->addCustom(function ($value) use ($values) {
-            return in_array($value, $values) ?: throw new ValidationException('value', '...', $value);
-        });
-    }
-
-    public function assertValue(mixed $expected): self
-    {
-        return $this->addCustom(function ($value) use ($expected) {
-            return ($value === $expected) ?: throw new ValidationException('value', $expected, $value);
+        return $this->addCustom(function ($value) use ($values, $strict) {
+            return in_array($value, $values, $strict) ?: throw new ValidationException('value', join(',', $values), $value);
         });
     }
 
