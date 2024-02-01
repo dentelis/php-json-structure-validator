@@ -35,7 +35,7 @@ class ObjectType extends AbstractType implements TypeInterface
             }
         });
 
-        $this->addCustom(function ($value, $path) {
+        $this->addCustom(function (mixed $value, array $path) {
             foreach ($this->properties as $propertyName => [$typeOrClosure, $mandatory]) {
                 $type = is_callable($typeOrClosure) ? $typeOrClosure($value) : $typeOrClosure;
                 if (!($type instanceof TypeInterface)) {

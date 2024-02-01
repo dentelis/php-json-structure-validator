@@ -46,7 +46,7 @@ class IntersectionType implements TypeInterface
         return $this;
     }
 
-    public function validate(mixed $value, array $path = []): bool
+    public function validate(mixed $value, array $path = []): true
     {
         foreach ($this->types as $type) {
             try {
@@ -55,9 +55,8 @@ class IntersectionType implements TypeInterface
                 continue;
             }
             //there were no exceptions
-            if ($result === true) {
-                return true;
-            }
+            return true;
+
         }
         //@todo better text
         throw new ValidationException('type', 'one of intersected types', 'other');

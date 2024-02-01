@@ -55,7 +55,7 @@ abstract class AbstractType implements TypeInterface
      * @return void
      * @throws ValidationException
      */
-    public function validate(mixed $value, array $path = []): bool
+    public function validate(mixed $value, array $path = []): true
     {
         foreach ($this->customConditions as list($closure, $skipIfNull)) {
             if (is_null($value) && $skipIfNull) {
@@ -79,15 +79,15 @@ abstract class AbstractType implements TypeInterface
         return $this->assertValueIn($expected, true);
     }
 
-    public function assertValueIn(array $values, bool $strict = false): self
+    public function assertValueIn(array $expectedValues, bool $strict = false): self
     {
-        foreach ($values as $value) {
+        foreach ($expectedValues as $value) {
             if (is_null($value)) {
                 throw new RuntimeException('Null is not possible value for assertValueIn. Use setNullAllowed() instead.');
             }
         }
-        return $this->addCustom(function ($value) use ($values, $strict) {
-            return in_array($value, $values, $strict) ?: throw new ValidationException('value', join(',', $values), $value);
+        return $this->addCustom(function ($value) use ($expectedValues, $strict) {
+            return in_array($value, $expectedValues, $strict) ?: throw new ValidationException('value', join(',', $expectedValues), $value);
         });
     }
 

@@ -3,7 +3,7 @@
 Validator is a PHP library for validation data structure received from json_decode.
 
 ## Specific
-The library was made to test json compatible data structures. Arrays with keys are not supported.
+The library was made to test json compatible data structures. Array key validation is not supported.
 
 ## Installation
 
