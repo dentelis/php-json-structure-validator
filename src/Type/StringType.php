@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Dentelis\Validator\Type;
 
@@ -11,6 +12,11 @@ class StringType extends AbstractType implements TypeInterface
     public function __construct()
     {
         parent::__construct('string');
+    }
+
+    public function assertNotEmpty(): self
+    {
+        return $this->assertLength(min: 1);
     }
 
     public function assertLength(?int $min = null, ?int $max = null): self

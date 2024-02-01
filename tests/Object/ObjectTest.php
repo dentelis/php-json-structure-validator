@@ -23,7 +23,6 @@ final class ObjectTest extends TestCase
 
     public static function successProvider(): array
     {
-
         return [
             //#0
             [
@@ -88,7 +87,6 @@ final class ObjectTest extends TestCase
                             ->addProperty('size', (new FloatIntegerType())->assertPositive())
                     )
             ],
-
         ];
     }
 
@@ -124,8 +122,16 @@ final class ObjectTest extends TestCase
                     ->addProperty('str', (new StringType()))
                     ->addProperty('email', (new StringType())->assertEmail())
             ],
-
-
+            //#3 type
+            [
+                [
+                    'str' => 'foo',
+                    'email' => 'user@example.com',
+                ],
+                (new ObjectType())
+                    ->addProperty('str', (new StringType()))
+                    ->addProperty('email', (new StringType())->assertEmail())
+            ],
         ];
 
     }
