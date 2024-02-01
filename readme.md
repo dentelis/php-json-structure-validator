@@ -1,6 +1,6 @@
 # dentelis/validator
 
-Validator is a PHP library for validation data structure received from json_decode.
+Validator is a PHP library for validation data structure received from external json API.
 
 ## Specific
 The library was made to test json compatible data structures. Array key validation is not supported.
@@ -15,35 +15,26 @@ composer require dentelis/validator
 
 ## Usage
 You can use library with(or without) any testing framework you want.
+
 ```php
-declare(strict_types=1);
+//setup structure for validation
 
-use PHPUnit\Framework\TestCase;
-
-final class ObjectSimpleTest extends TestCase
-{
-
-   public function testSuccess(): void
-   {
-   
-      $data = (object)['id' => 1, 'title' => 'lorem ipsum'];
-
-      $struct = new _object([
-          'id' => new _property_simple(_simpleType::INT, false),
-          'title' => new _property_simple(_simpleType::STRING_NOT_EMPTY, false, regexp: '~^(.+\s.+)$~'),
-      ]);
-      
-      try {
-          $struct->validate($data);
-      } catch (Throwable $e) {
-          $this->assertNull($e);
-      }
-      
-      $this->expectNotToPerformAssertions();
-   }
+//object example
+$validator = (new ObjectType())
+    ->addProperty('str', (new StringType())->assertNotEmpty())
+    ->addProperty('email', (new StringType())->assertEmail());
+    
+//run validation
+$data = json_decode(...);
+try {
+    $validator->validate($data);
+} catch (\Throwable $e) {
+    //do smth
+    
 }
 ```
 
+See examples directory for full example.
 
 ## Contributing
 
