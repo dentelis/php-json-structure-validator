@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Dentelis\Validator\Type;
 
@@ -82,6 +83,13 @@ abstract class AbstractType implements TypeInterface
         }
         return $this->addCustom(function ($value) use ($values) {
             return in_array($value, $values) ?: throw new ValidationException('value', '...', $value);
+        });
+    }
+
+    public function assertValue(mixed $expected): self
+    {
+        return $this->addCustom(function ($value) use ($expected) {
+            return ($value === $expected) ?: throw new ValidationException('value', $expected, $value);
         });
     }
 

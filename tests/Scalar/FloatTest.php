@@ -24,6 +24,7 @@ final class FloatTest extends TestCase
             [0.0, (new FloatType())],
             [-1.1, (new FloatType())],
             [0.01, (new FloatType())->assertPositive()],
+            [-0.01, (new FloatType())->assertNegative()],
             [100.0, (new FloatType())->assertInterval(0, 100)],
             [100.0, (new FloatType())->assertInterval(0, 1000)],
             [-1000.0, (new FloatType())->assertInterval(-1000, 1000)],
@@ -54,6 +55,8 @@ final class FloatTest extends TestCase
             [-1.0, (new FloatType())->assertInterval(1, 100)],
             [101.0, (new FloatType())->assertInterval(1, 100)],
             [40.0, (new FloatType())->assertValueIn([30, 50])],
+            [-0.01, (new FloatType())->assertPositive()],
+            [0.01, (new FloatType())->assertNegative()],
         ];
 
     }

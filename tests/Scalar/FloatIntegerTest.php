@@ -29,7 +29,8 @@ final class FloatIntegerTest extends TestCase
             [-100.0, (new FloatIntegerType())->assertInterval(-1000, 1000)],
             [50.0, (new FloatIntegerType())->assertValueIn([0, 50, 100])],
             [50.0, (new FloatIntegerType())->assertValueIn([50])],
-
+            [0.01, (new FloatIntegerType())->assertPositive()],
+            [-0.01, (new FloatIntegerType())->assertNegative()],
             [1, (new FloatIntegerType())],
             [0, (new FloatIntegerType())],
             [-1, (new FloatIntegerType())],
@@ -39,7 +40,10 @@ final class FloatIntegerTest extends TestCase
             [-100, (new FloatIntegerType())->assertInterval(-1000, 1000)],
             [50, (new FloatIntegerType())->assertValueIn([0, 50, 100])],
             [50, (new FloatIntegerType())->assertValueIn([50])],
-
+            [1, (new FloatIntegerType())->assertPositive()],
+            [-1, (new FloatIntegerType())->assertNegative()],
+            [0, (new FloatIntegerType())->assertValue(0)],
+            [0.0, (new FloatIntegerType())->assertValue(0.0)],
             [null, (new FloatIntegerType())->setNullAllowed()],
             [null, (new FloatIntegerType())->setNullAllowed()->assertInterval(0, 100)],
         ];
@@ -65,6 +69,13 @@ final class FloatIntegerTest extends TestCase
             [-1, (new FloatIntegerType())->assertInterval(1, 100)],
             [101, (new FloatIntegerType())->assertInterval(1, 100)],
             [40, (new FloatIntegerType())->assertValueIn([30, 50])],
+            [-0.01, (new FloatIntegerType())->assertPositive()],
+            [0.01, (new FloatIntegerType())->assertNegative()],
+            [-1, (new FloatIntegerType())->assertPositive()],
+            [1, (new FloatIntegerType())->assertNegative()],
+            [0, (new FloatIntegerType())->assertValue(0.0)],
+            [0.0, (new FloatIntegerType())->assertValue(0)],
+            [-1, (new FloatIntegerType())->assertValue(1)],
         ];
 
     }

@@ -21,9 +21,12 @@ final class IntegerTest extends TestCase
     {
         return [
             [0, (new IntegerType())],
+            [0, (new IntegerType())->assertValue(0)],
             [1, (new IntegerType())->assertPositive()],
             [1000, (new IntegerType())],
             [-1000, (new IntegerType())],
+            [-1000, (new IntegerType())->assertValue(-1000)],
+            [-1000, (new IntegerType())->assertNegative()],
             [100, (new IntegerType())->assertInterval(0, 100)],
             [100, (new IntegerType())->assertInterval(0, 1000)],
             [-1000, (new IntegerType())->assertInterval(-1000, 1000)],
@@ -50,6 +53,8 @@ final class IntegerTest extends TestCase
             [-1, (new IntegerType())->assertInterval(1, 100)],
             [101, (new IntegerType())->assertInterval(1, 100)],
             [40, (new IntegerType())->assertValueIn([30, 50])],
+            [-1, (new IntegerType())->assertPositive()],
+            [1, (new IntegerType())->assertNegative()],
         ];
 
     }

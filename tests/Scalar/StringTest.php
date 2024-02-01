@@ -21,6 +21,7 @@ final class StringTest extends TestCase
     {
         return [
             ['foo', (new StringType())],
+            ['foo', (new StringType())->assertValue('foo')],
             ['foo bar', (new StringType())],
             ['', (new StringType())],
             ['123', (new StringType())],
@@ -57,6 +58,9 @@ final class StringTest extends TestCase
             [(object)['foo' => 'bar'], (new StringType())],
             ['foobar', (new StringType())->assertRegexp('~^(\d+)$~')],
             [null, (new StringType())],
+            ['foo', (new StringType())->assertValue('bar')],
+            ['', (new StringType())->assertValue('bar')],
+            ['foo', (new StringType())->assertValue('')],
             ['', (new StringType())->assertLength(1)],
             ['foobar', (new StringType())->assertLength(0, 3)],
             ['foo', (new StringType())->assertEmail()],

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Dentelis\Validator\Type;
 
@@ -32,6 +33,14 @@ class FloatType extends AbstractType implements TypeInterface
     {
         $this->addCustom(function ($value) {
             return ($value) > 0 ?: throw new ValidationException('value', '>0', ($value));
+        });
+        return $this;
+    }
+
+    public function assertNegative(): self
+    {
+        $this->addCustom(function ($value) {
+            return ($value) < 0 ?: throw new ValidationException('value', '<0', ($value));
         });
         return $this;
     }
