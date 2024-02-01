@@ -4,34 +4,39 @@ declare(strict_types=1);
 namespace tests\Array;
 
 use Dentelis\Validator\Type\ArrayType;
-use Dentelis\Validator\Type\IntegerType;
-use Dentelis\Validator\Type\ObjectType;
+use Dentelis\Validator\Type\IntersectionType;
 use Dentelis\Validator\Type\StringType;
 use Dentelis\Validator\TypeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Stringable;
+use tests\_dto\CarDTO;
 use tests\_dto\UserDTO;
 use Throwable;
 
 #[
     CoversClass(ArrayType::class),
+    CoversClass(IntersectionType::class),
 ]
-final class ArrayObjectTest extends TestCase
+final class ArrayObjectIntersectionTest extends TestCase
 {
 
     public static function successProvider(): array
     {
+        //@todo
+
         return [
             [
                 [
                     new UserDTO(1, 'user@example.com'),
-                    new UserDTO(2, 'admin@mail.com'),
+                    new CarDTO('bmw', 'x5'),
                 ],
                 (new ArrayType())
-                    ->assertNotEmpty()
-                    ->assertType(UserDTO::getDefinition())
+                    ->assertType(new IntersectionType([
+                        UserDTO::getDefinition(),
+                        CarDTO::getDefinition(),
+                    ]))
             ],
 
         ];
@@ -39,15 +44,33 @@ final class ArrayObjectTest extends TestCase
 
     public static function failProvider(): array
     {
+
+        //@todo
+
         return [
             [
                 [
                     new UserDTO(1, 'user@example.com'),
-                    new UserDTO(2, 'notemail'),
+                    new CarDTO('bmw', 'x5'),
+                    new UserDTO(1, 'user@example.com'),
                 ],
                 (new ArrayType())
-                    ->assertNotEmpty()
-                    ->assertType(UserDTO::getDefinition())
+                    ->assertType(new IntersectionType([
+                        UserDTO::getDefinition(),
+                        UserDTO::getDefinition(),
+                        #CarDTO::getDefinition(),
+                    ]))
+            ],
+            [
+                [
+                    new UserDTO('string', 'user@example.com'),
+                    new CarDTO('bmw', 'x5'),
+                ],
+                (new ArrayType())
+                    ->assertType(new IntersectionType([
+                        UserDTO::getDefinition(),
+                        CarDTO::getDefinition(),
+                    ]))
             ],
         ];
 

@@ -1,54 +1,56 @@
 <?php
 declare(strict_types=1);
 
-namespace tests\Array;
+namespace tests\Object;
 
-use Dentelis\Validator\Type\ArrayType;
-use Dentelis\Validator\Type\IntegerType;
 use Dentelis\Validator\Type\ObjectType;
-use Dentelis\Validator\Type\StringType;
 use Dentelis\Validator\TypeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Stringable;
-use tests\_dto\UserDTO;
+use tests\_dto\WorkerDTO;
 use Throwable;
 
 #[
-    CoversClass(ArrayType::class),
+    CoversClass(ObjectType::class),
 ]
-final class ArrayObjectTest extends TestCase
+final class ObjectRecursiveTest extends TestCase
 {
 
     public static function successProvider(): array
     {
+
+        //@todo
         return [
             [
-                [
-                    new UserDTO(1, 'user@example.com'),
-                    new UserDTO(2, 'admin@mail.com'),
-                ],
-                (new ArrayType())
-                    ->assertNotEmpty()
-                    ->assertType(UserDTO::getDefinition())
+                (new WorkerDTO('john')),
+                WorkerDTO::getDefinition(),
             ],
-
+            [
+                (new WorkerDTO('john'))
+                    ->setBoss((new WorkerDTO('mark'))),
+                WorkerDTO::getDefinition(),
+            ],
+            [
+                (new WorkerDTO('john'))
+                    ->setBoss(
+                        (new WorkerDTO('mark'))->setBoss(new WorkerDTO('karl'))
+                    ),
+                WorkerDTO::getDefinition(),
+            ],
         ];
     }
 
     public static function failProvider(): array
     {
+
         return [
+            //#0 - check property not exist in object
             [
-                [
-                    new UserDTO(1, 'user@example.com'),
-                    new UserDTO(2, 'notemail'),
-                ],
-                (new ArrayType())
-                    ->assertNotEmpty()
-                    ->assertType(UserDTO::getDefinition())
-            ],
+                null,
+                WorkerDTO::getDefinition(),
+            ]
         ];
 
     }
