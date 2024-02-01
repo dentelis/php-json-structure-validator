@@ -5,7 +5,6 @@ namespace tests\Array;
 
 use Dentelis\Validator\Type\ArrayType;
 use Dentelis\Validator\Type\IntersectionType;
-use Dentelis\Validator\Type\StringType;
 use Dentelis\Validator\TypeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;

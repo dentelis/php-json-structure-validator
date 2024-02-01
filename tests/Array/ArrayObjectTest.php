@@ -4,9 +4,6 @@ declare(strict_types=1);
 namespace tests\Array;
 
 use Dentelis\Validator\Type\ArrayType;
-use Dentelis\Validator\Type\IntegerType;
-use Dentelis\Validator\Type\ObjectType;
-use Dentelis\Validator\Type\StringType;
 use Dentelis\Validator\TypeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
