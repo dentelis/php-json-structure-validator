@@ -3,7 +3,7 @@
   "description": "Data structure validation framework",
   "type": "library",
   "require": {
-    "php": "~8.3",
+    "php": "~8.2",
     "ext-mbstring": "*"
   },
   "autoload": {

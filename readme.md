@@ -52,7 +52,7 @@ try {
 
 ```
 
-See examples directory for full example.
+See [examples](https://github.com/dentelis/validator/tree/master/examples) directory for full example.
 
 ## Todo
 
