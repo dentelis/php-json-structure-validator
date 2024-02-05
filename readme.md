@@ -3,6 +3,7 @@
 Validator is a PHP library for validation data structure received from external json API.
 
 ## Specific
+
 The library was made to test json compatible data structures. Array key validation is not supported.
 
 ## Installation
@@ -14,6 +15,7 @@ composer require dentelis/validator
 ```
 
 ## Usage
+
 You can use library with(or without) any testing framework you want.
 
 ```php
@@ -36,6 +38,14 @@ try {
 
 See examples directory for full example.
 
+## Todo
+
+- [ ] more examples
+- [ ] proper path in exceptions
+- [ ] do not fail on first exception
+- [ ] comments translate to english
+- [ ] create TypeInterface from Classname (what to do with arrays)
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
@@ -46,64 +56,3 @@ Please make sure to update tests as appropriate.
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-
-# Ideas
-
-# что-то (верхний уровень) - не уверен что нужно
-   - тип = простой / объект / массив
-   
-
-## простой-тип (возможно разворачиваем в пачку разных объектов string/bool/etc)
-   - реальный_тип (int/float/string/... )
-   - расширенные условия 
-     - все: возможные значения (перечисления)
-     - все: возможные значения не содержат (перечисления)
-     - строка: удовлетворяет регулярке
-     - строка: не пустая
-     - строка: email / url / etc
-   - nullable?
-
-## объект
-  - набор свойств
-  - nullable?
-  - расширенные условия 
-    - могут ли приходить новый свойства (def false)
-    - функция валидатор
-
-### свойство объекта
-  - название
-  - тип (простой тип / объект / массив)
-  - расширенные условия
-     - может ли отсутствовать (def false)
-
-
-# массив
-  - тип (простой тип / объект / массив)
-  - расширенные условия? (ограничение на количество элементов сверху/снизу)
-  - nullable?
-
-? идея - верхнеуровнево переопределять дефолтные значения для условий
-   - можно ли расширять объекты?
-   - могут ли отсутствовать свойства?
-
-? идея - везде где передаем тип - позволяем передавать туда функцию, которая вернет данные от даты
-
-? идея - делаем у каждого объекта функции которые добавляют требования. удалять требования нельзя
-nullable вероятно перемещаем в расширенные тоже
-
-? идея - не делать отдельно простой тип, считать все эти string/int/bool и тд - 
-аналогичными вещами как объект/массив
-тогда сможем сделать расширения например в string типа isUrl, matchRegexp, notEmpty, и тд
-
-? путаница на каком уровне храним nullable
-
-? нужен ли верхний уровень (что-то)?
-
-? обдумать - что происходит в случае ошибки валидации - exception в котором есть какой-то путь?
-
-? обдумать - не останавливаться на первом расхождении
-
-! перевод phpdoc на английский
-
-! генератор структуры из класса (+подумать что делать для массива)
