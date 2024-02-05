@@ -59,9 +59,12 @@ class ObjectType extends AbstractType implements TypeInterface
     }
 
     /**
-     * @param string $property
-     * @param TypeInterface|Closure $type
-     * @param bool $mandatory
+     * Add property to the object
+     * @param string $property property name
+     * @param TypeInterface|Closure $type Type. Behavior differs depending on the type.
+     *    If TypeInterface passed, it runs TypeInterface::validate for property value
+     *    If Closure passed, property real type is determined before validation like Closure($object):TypeInterface
+     * @param bool $mandatory false if this property can be missed from the object
      * @return $this
      */
     public function addProperty(string $property, TypeInterface|Closure $type, bool $mandatory = true): self
@@ -70,6 +73,10 @@ class ObjectType extends AbstractType implements TypeInterface
         return $this;
     }
 
+    /**
+     * Allows object to contain undescribed fields)
+     * @return $this
+     */
     public function setExtensible(): self
     {
         $this->isExtensible = true;

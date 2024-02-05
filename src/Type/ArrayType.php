@@ -17,9 +17,9 @@ class ArrayType extends AbstractType implements TypeInterface
 
     /**
      * Assert array element type.
-     * @param TypeInterface|Closure $type Behavior differs depending on the type.
+     * @param TypeInterface|Closure $type Type. Behavior differs depending on the type.
      *    If TypeInterface passed, it runs TypeInterface::validate for each element.
-     *    If Closure passed, for each element type is determined before validation like Closure($item):TypeInterface
+     *    If Closure passed, each element real type is determined before validation like Closure($item):TypeInterface
      * @return $this
      */
     public function assertType(TypeInterface|Closure $type): self
