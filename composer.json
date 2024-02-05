@@ -1,13 +1,15 @@
 {
-  "name": "entelisteam/validator",
+  "name": "dentelis/validator",
   "description": "Data structure validation framework",
   "type": "library",
   "require": {
-    "php": "~8.1"
+    "php": "~8.3",
+    "ext-mbstring": "*"
   },
   "autoload": {
     "psr-4": {
-      "EntelisTeam\\Validator\\": "src/Validator/"
+      "EntelisTeam\\Validator\\": "src/Validator/",
+      "Dentelis\\Validator\\": "src/"
     }
   },
   "autoload-dev": {
@@ -21,9 +23,9 @@
   },
   "authors": [
     {
-      "name": "ENTELISTEAM INC",
-      "email": "welcome@entelis.team",
-      "homepage": "https://entelis.team"
+      "name": "Dim Entelis",
+      "email": "dentelis@gmail.com",
+      "homepage": "https://www.linkedin.com/in/dentelis/"
     }
   ],
   "require-dev": {

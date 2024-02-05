@@ -1,10 +1,12 @@
 <?php
 declare(strict_types=1);
 
+namespace tests\old;
+
 use EntelisTeam\Validator\Structure\_struct;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use tests\structs\StructFactory;
+use tests\old\structs\StructFactory;
 
 final class ObjectPropertyArraySimpleTypeTest extends TestCase
 {

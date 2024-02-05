@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace tests;
+namespace tests\old;
 
 use EntelisTeam\Validator\Enum\_simpleType;
 use EntelisTeam\Validator\Exception\EmptyValueException;

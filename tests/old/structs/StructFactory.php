@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\structs;
+namespace tests\old\structs;
 
 use EntelisTeam\Validator\Enum\_simpleType;
 use EntelisTeam\Validator\Structure\_object;
