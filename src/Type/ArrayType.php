@@ -15,6 +15,13 @@ class ArrayType extends AbstractType implements TypeInterface
         parent::__construct('array');
     }
 
+    /**
+     * Assert array element type.
+     * @param TypeInterface|Closure $type Behavior differs depending on the type.
+     *    If TypeInterface passed, it runs TypeInterface::validate for each element.
+     *    If Closure passed, for each element type is determined before validation like Closure($item):TypeInterface
+     * @return $this
+     */
     public function assertType(TypeInterface|Closure $type): self
     {
         $this->addCustom(function (array $values, array $path) use ($type) {
@@ -33,17 +40,27 @@ class ArrayType extends AbstractType implements TypeInterface
         return $this;
     }
 
+    /**
+     * Assert array has 0 elements
+     * @return $this
+     */
     public function assertEmpty(): self
     {
         return $this->assertCount(0);
     }
 
+    /**
+     * Assert array has exactly N elements
+     * @param int ...$expected
+     * @return $this
+     */
     public function assertCount(int ...$expected): self
     {
         return $this->assertCountIn($expected);
     }
 
     /**
+     * Assert array count is in provided values
      * @param Int[] $expectedCounts possible count values
      */
     public function assertCountIn(array $expectedCounts): self
@@ -54,11 +71,21 @@ class ArrayType extends AbstractType implements TypeInterface
         return $this;
     }
 
+    /**
+     * Assert array has 1 or more elements
+     * @return $this
+     */
     public function assertNotEmpty(): self
     {
         return $this->assertCountInterval(min: 1);
     }
 
+    /**
+     * Assert array count is in provided interval (inclusive)
+     * @param int|null $min
+     * @param int|null $max
+     * @return $this
+     */
     public function assertCountInterval(?int $min = null, ?int $max = null): self
     {
         if (!is_null($min)) {
