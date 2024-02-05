@@ -8,9 +8,6 @@ use Dentelis\Validator\Exception\ValidationException;
 use Dentelis\Validator\TypeInterface;
 use RuntimeException;
 
-/**
- * @todo возможно это AbstractSimpleType
- */
 abstract class AbstractType implements TypeInterface
 {
     private bool $nullAllowed = false;
@@ -28,6 +25,13 @@ abstract class AbstractType implements TypeInterface
         }
     }
 
+    /**
+     * Adds custom validation rule
+     * @todo consider about making protected
+     * @param Closure $closure function($value, $path) must return true in case of success
+     * @param bool $skipIfNull do not run check if value == null
+     * @return $this
+     */
     public final function addCustom(Closure $closure, bool $skipIfNull = true): self
     {
         $this->customConditions[] = [$closure, $skipIfNull];
@@ -40,7 +44,7 @@ abstract class AbstractType implements TypeInterface
     }
 
     /**
-     * @param bool $value Допустим ли null в качестве значения
+     * Allows null as possible value
      * @return $this
      */
     public final function setNullAllowed(): self
@@ -50,6 +54,7 @@ abstract class AbstractType implements TypeInterface
     }
 
     /**
+     * Validation
      * @param mixed $value
      * @param array $path
      * @return void
@@ -74,11 +79,22 @@ abstract class AbstractType implements TypeInterface
         return true;
     }
 
+    /**
+     * Assert value === expected
+     * @param mixed ...$expected
+     * @return $this
+     */
     public function assertValue(mixed ...$expected): self
     {
         return $this->assertValueIn($expected, true);
     }
 
+    /**
+     * Assert value in [expected]
+     * @param array $expectedValues
+     * @param bool $strict
+     * @return $this
+     */
     public function assertValueIn(array $expectedValues, bool $strict = false): self
     {
         foreach ($expectedValues as $value) {
