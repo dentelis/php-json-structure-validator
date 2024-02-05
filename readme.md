@@ -22,18 +22,32 @@ You can use library with(or without) any testing framework you want.
 //setup structure for validation
 
 //object example
-$validator = (new ObjectType())
-    ->addProperty('str', (new StringType())->assertNotEmpty())
+$user = (new ObjectType())
+    ->addProperty('name', (new StringType())->assertNotEmpty())
     ->addProperty('email', (new StringType())->assertEmail());
     
-//run validation
-$data = json_decode(...);
+$data = json_decode('{"name":"user", "email":"user@example.com"}');
 try {
-    $validator->validate($data);
+    $user->validate($data);
 } catch (\Throwable $e) {
     //do smth
     
 }
+
+//array of objects
+$users = (new ArrayType())
+    ->assertNotEmpty()
+    ->assertType($user);
+
+$data = json_decode('[{"name":"user", "email":"user@example.com"},{"name":"user", "email":"user@example.com"}]');
+try {
+    $users->validate($data);
+} catch (\Throwable $e) {
+    //do smth
+
+}
+
+
 ```
 
 See examples directory for full example.

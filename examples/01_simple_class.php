@@ -1,17 +1,19 @@
 <?php
 declare(strict_types=1);
 
-$data = (object)[
-    'name' => 'user',
-    'email' => 'user@example.com',
-];
+use Dentelis\Validator\Type\ObjectType;
+use Dentelis\Validator\Type\StringType;
 
-$validator = (new ObjectType())
-    ->addProperty('str', (new StringType())->assertNotEmpty())
+//object example
+$user = (new ObjectType())
+    ->addProperty('name', (new StringType())->assertNotEmpty())
     ->addProperty('email', (new StringType())->assertEmail());
 
+//run validation
+$data = json_decode('{"name":"user", "email":"user@example.com"}');
 try {
-    $validator->validate($data);
+    $user->validate($data);
 } catch (\Throwable $e) {
     //do smth
+
 }
