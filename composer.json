@@ -31,7 +31,7 @@
   "minimum-stability": "dev",
   "scripts": {
     "test": "vendor/bin/phpunit tests --fail-on-risky  --display-warnings --display-errors --display-notices  --display-skipped --display-deprecations",
-    "psalm": "vendor/bin/psalm --shepherd --show-info=true"
+    "psalm": "vendor/bin/psalm --shepherd --show-info=true --no-diff"
   },
   "require-dev": {
     "phpunit/phpunit": "^10.2@dev",

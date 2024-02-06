@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
+use Dentelis\StructureValidator\Exception\ValidationException;
 use Dentelis\StructureValidator\Type\ArrayType;
 use Dentelis\StructureValidator\Type\ObjectType;
 use Dentelis\StructureValidator\Type\StringType;
 
-//object example
+$data = json_decode('[{"name":"user", "email":"user@example.com"},{"name":"user", "email":"user@example.com"}]');
+
+//define structure
 $users = (new ArrayType())
     ->assertNotEmpty()
     ->assertType((new ObjectType())
@@ -16,10 +19,9 @@ $users = (new ArrayType())
     );
 
 //run validation
-$data = json_decode('[{"name":"user", "email":"user@example.com"},{"name":"user", "email":"user@example.com"}]');
 try {
     $users->validate($data);
-} catch (\Throwable $e) {
+} catch (ValidationException $e) {
     //do smth
 
 }

@@ -31,7 +31,7 @@ $user = (new ObjectType())
 $data = json_decode('{"name":"user", "email":"user@example.com"}');
 try {
     $user->validate($data);
-} catch (\Throwable $e) {
+} catch (ValidationException $e) {
     //do smth
     
 }
@@ -44,7 +44,7 @@ $users = (new ArrayType())
 $data = json_decode('[{"name":"user", "email":"user@example.com"},{"name":"user", "email":"user@example.com"}]');
 try {
     $users->validate($data);
-} catch (\Throwable $e) {
+} catch (ValidationException $e) {
     //do smth
 
 }
