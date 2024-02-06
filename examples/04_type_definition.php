@@ -32,8 +32,8 @@ $user = (new ObjectType())
         return match ($user->contact_type) {
             'email' => (new StringType())->assertEmail(),
             'address' => (new ObjectType())
-                ->addProperty('address', (new StringType()))
-                ->addProperty('phone', (new StringType())),
+                ->addProperty('address', (new StringType())->assertRegexp('/^(\d){6},.+/'))
+                ->addProperty('phone', (new StringType())->assertLength(min: 6, max: 12)),
         };
     });
 
