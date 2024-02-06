@@ -22,12 +22,12 @@ class StringType extends AbstractType implements TypeInterface
     public function assertLength(?int $min = null, ?int $max = null): self
     {
         if (!is_null($min)) {
-            $this->addCustom(function ($value) use ($min) {
+            $this->addCustom(function (mixed $value) use ($min): bool {
                 return mb_strlen($value) >= $min ?: throw new ValidationException('string length', '>= ' . $min, mb_strlen($value));
             });
         }
         if (!is_null($max)) {
-            $this->addCustom(function ($value) use ($max) {
+            $this->addCustom(function (mixed $value) use ($max): bool {
                 return mb_strlen($value) <= $max ?: throw new ValidationException('string length', '<= ' . $max, mb_strlen($value));
             });
         }
@@ -48,7 +48,7 @@ class StringType extends AbstractType implements TypeInterface
      */
     public function assertRegexp(string $regexp, ?string $regexpTitle = null): self
     {
-        return $this->addCustom(function ($value) use ($regexp, $regexpTitle) {
+        return $this->addCustom(function (mixed $value) use ($regexp, $regexpTitle): bool {
             return preg_match($regexp, $value) === 1 ?: (throw new ValidationException('string match regexp', $regexpTitle ?? $regexp, $value));
         });
     }
@@ -58,7 +58,7 @@ class StringType extends AbstractType implements TypeInterface
      */
     public function assertEmail(): self
     {
-        return $this->addCustom(function ($value) {
+        return $this->addCustom(function (mixed $value): bool {
             return (filter_var($value, FILTER_VALIDATE_EMAIL) !== false) ?: (throw new ValidationException('string content', 'email', $value));
         });
     }

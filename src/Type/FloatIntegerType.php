@@ -11,7 +11,7 @@ class FloatIntegerType extends FloatType implements TypeInterface
 
     public function __construct()
     {
-        $this->addCustom(function ($value) {
+        $this->addCustom(function (float|int|null $value): bool {
             return ((is_null($value) && $this->getNullAllowed()) || (gettype($value) === 'double' || gettype($value) === 'integer')) ?: throw new ValidationException('type', 'double|integer', gettype($value));
         }, false);
     }

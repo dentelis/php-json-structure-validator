@@ -22,7 +22,7 @@ class ObjectType extends AbstractType implements TypeInterface
         parent::__construct('object');
 
 
-        $this->addCustom(function ($value) {
+        $this->addCustom(function (object $value): bool {
             //check we have all mandatory properties
             $missedProperties = [];
             $requiredProperties = [];
@@ -53,7 +53,7 @@ class ObjectType extends AbstractType implements TypeInterface
 
 
         //determine and validate properties type
-        $this->addCustom(function (mixed $value, array $path) {
+        $this->addCustom(function (mixed $value, array $path): bool {
             foreach ($this->properties as $propertyName => [$typeOrClosure, $mandatory]) {
                 $type = is_callable($typeOrClosure) ? $typeOrClosure($value) : $typeOrClosure;
                 if (!($type instanceof TypeInterface)) {

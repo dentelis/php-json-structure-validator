@@ -11,7 +11,7 @@ class NullType extends AbstractType implements TypeInterface
 
     public function __construct()
     {
-        $this->addCustom(function ($value) {
+        $this->addCustom(function (mixed $value): bool {
             return (is_null($value)) ?: throw new ValidationException('type', 'NULL', gettype($value));
         }, false);
     }
