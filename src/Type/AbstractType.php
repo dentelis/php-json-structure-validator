@@ -54,11 +54,7 @@ abstract class AbstractType implements TypeInterface
     }
 
     /**
-     * Validation
-     * @param mixed $value
-     * @param array $path
-     * @return void
-     * @throws ValidationException
+     * @inheritDoc
      */
     public function validate(mixed $value, array $path = []): true
     {
