@@ -10,6 +10,15 @@
       "role": "Developer"
     }
   ],
+  "keywords": [
+    "json",
+    "validator",
+    "validation",
+    "assert",
+    "assertion",
+    "testing",
+    "structure"
+  ],
   "support": {
     "issues": "https://github.com/dentelis/php-json-structure-validator/issues"
   },
