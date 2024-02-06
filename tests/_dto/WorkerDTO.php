@@ -2,10 +2,10 @@
 
 namespace tests\_dto;
 
-use Dentelis\Validator\Type\IntersectionType;
-use Dentelis\Validator\Type\NullType;
-use Dentelis\Validator\Type\ObjectType;
-use Dentelis\Validator\Type\StringType;
+use Dentelis\StructureValidator\Type\IntersectionType;
+use Dentelis\StructureValidator\Type\NullType;
+use Dentelis\StructureValidator\Type\ObjectType;
+use Dentelis\StructureValidator\Type\StringType;
 use stdClass;
 
 class WorkerDTO extends stdClass

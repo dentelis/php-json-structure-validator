@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Dentelis\Validator\Type;
+namespace Dentelis\StructureValidator\Type;
 
-use Dentelis\Validator\Exception\ValidationException;
-use Dentelis\Validator\TypeInterface;
+use Dentelis\StructureValidator\Exception\ValidationException;
+use Dentelis\StructureValidator\TypeInterface;
 
 class IntegerType extends AbstractType implements TypeInterface
 {

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace tests\Array;
 
-use Dentelis\Validator\Type\ArrayType;
-use Dentelis\Validator\Type\IntersectionType;
-use Dentelis\Validator\TypeInterface;
+use Dentelis\StructureValidator\Type\ArrayType;
+use Dentelis\StructureValidator\Type\IntersectionType;
+use Dentelis\StructureValidator\TypeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

@@ -2,8 +2,8 @@
 
 namespace tests\_dto;
 
-use Dentelis\Validator\Type\ObjectType;
-use Dentelis\Validator\Type\StringType;
+use Dentelis\StructureValidator\Type\ObjectType;
+use Dentelis\StructureValidator\Type\StringType;
 use stdClass;
 
 class CarDTO extends stdClass

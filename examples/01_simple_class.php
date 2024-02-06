@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-use Dentelis\Validator\Type\ObjectType;
-use Dentelis\Validator\Type\StringType;
+use Dentelis\StructureValidator\Type\ObjectType;
+use Dentelis\StructureValidator\Type\StringType;
 
 //object example
 $user = (new ObjectType())

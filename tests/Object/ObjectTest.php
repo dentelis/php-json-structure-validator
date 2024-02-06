@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace tests\Object;
 
-use Dentelis\Validator\Type\BooleanType;
-use Dentelis\Validator\Type\FloatIntegerType;
-use Dentelis\Validator\Type\IntegerType;
-use Dentelis\Validator\Type\ObjectType;
-use Dentelis\Validator\Type\StringType;
-use Dentelis\Validator\TypeInterface;
+use Dentelis\StructureValidator\Type\BooleanType;
+use Dentelis\StructureValidator\Type\FloatIntegerType;
+use Dentelis\StructureValidator\Type\IntegerType;
+use Dentelis\StructureValidator\Type\ObjectType;
+use Dentelis\StructureValidator\Type\StringType;
+use Dentelis\StructureValidator\TypeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

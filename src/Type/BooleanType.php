@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Dentelis\Validator\Type;
+namespace Dentelis\StructureValidator\Type;
 
-use Dentelis\Validator\TypeInterface;
+use Dentelis\StructureValidator\TypeInterface;
 
 class BooleanType extends AbstractType implements TypeInterface
 {

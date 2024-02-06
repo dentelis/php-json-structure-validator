@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Dentelis\Validator\Type;
+namespace Dentelis\StructureValidator\Type;
 
 use Closure;
-use Dentelis\Validator\Exception\ValidationException;
-use Dentelis\Validator\TypeInterface;
+use Dentelis\StructureValidator\Exception\ValidationException;
+use Dentelis\StructureValidator\TypeInterface;
 use RuntimeException;
 
 class ArrayType extends AbstractType implements TypeInterface

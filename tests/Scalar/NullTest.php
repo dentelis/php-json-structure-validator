@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace tests\Scalar;
 
-use Dentelis\Validator\Type\NullType;
-use Dentelis\Validator\TypeInterface;
+use Dentelis\StructureValidator\Type\NullType;
+use Dentelis\StructureValidator\TypeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

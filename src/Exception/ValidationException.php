@@ -1,6 +1,6 @@
 <?php
 
-namespace Dentelis\Validator\Exception;
+namespace Dentelis\StructureValidator\Exception;
 
 use Exception;
 use Stringable;

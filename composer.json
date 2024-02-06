@@ -1,5 +1,5 @@
 {
-  "name": "dentelis/validator",
+  "name": "dentelis/php-structure-validator",
   "description": "Data structure validation framework",
   "type": "library",
   "require": {
@@ -8,7 +8,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Dentelis\\Validator\\": "src/"
+      "Dentelis\\StructureValidator\\": "src/"
     }
   },
   "autoload-dev": {

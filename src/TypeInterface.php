@@ -1,6 +1,6 @@
 <?php
 
-namespace Dentelis\Validator;
+namespace Dentelis\StructureValidator;
 
 interface TypeInterface
 {
