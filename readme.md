@@ -1,4 +1,4 @@
-# dentelis/validator
+# dentelis/php-json-structure-validator
 
 Validator is a lightweight PHP library for validating the structure of data retrieved from an external json API.
 

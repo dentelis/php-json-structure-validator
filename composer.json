@@ -1,6 +1,6 @@
 {
   "name": "dentelis/php-json-structure-validator",
-  "description": "Data structure validation framework",
+  "description": "Json data structure validation framework",
   "license": "MIT",
   "authors": [
     {
