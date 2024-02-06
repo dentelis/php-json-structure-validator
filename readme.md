@@ -21,8 +21,6 @@ composer require dentelis/php-json-structure-validator
 You can use library with(or without) any testing framework you want.
 
 ```php
-//setup structure for validation
-
 //object example
 $user = (new ObjectType())
     ->addProperty('name', (new StringType())->assertNotEmpty())
