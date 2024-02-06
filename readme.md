@@ -4,15 +4,13 @@ Validator is a lightweight PHP library for validating the structure of data retr
 
 The library was originally created for use in acceptance api tests, but can be used anywhere else as well.
 
-See [dentelis/phpunit-json-assert](https://github.com/dentelis/phpunit-json-assert) for PhpUnit support.
-
 ## Specific
 
 The library was made to test json compatible data structures. Array key validation is not supported.
 
 ## Installation
 
-Use the package manager [composer](https://getcomposer.org/) to install Validator.
+Use the package manager [composer](https://getcomposer.org/) to install.
 
 ```bash
 composer require dentelis/php-json-structure-validator
@@ -21,6 +19,8 @@ composer require dentelis/php-json-structure-validator
 ## Usage
 
 You can use library with(or without) any testing framework you want.
+
+See [dentelis/phpunit-json-assert](https://github.com/dentelis/phpunit-json-assert) for PhpUnit support.
 
 ```php
 //object example
