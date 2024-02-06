@@ -13,7 +13,7 @@ The library was made to test json compatible data structures. Array key validati
 Use the package manager [composer](https://getcomposer.org/) to install Validator.
 
 ```bash
-composer require dentelis/validator
+composer require dentelis/php-json-structure-validator
 ```
 
 ## Usage
