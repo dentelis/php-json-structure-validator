@@ -19,5 +19,5 @@ try {
     $user->validate($data);
 } catch (ValidationException $e) {
     //do smth
-
+    throw $e;
 }
