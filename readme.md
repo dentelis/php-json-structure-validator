@@ -2,7 +2,9 @@
 
 Validator is a lightweight PHP library for validating the structure of data retrieved from an external json API.
 
-The library was originally created for use in acceptance api tests, but can be used anywhere else.
+The library was originally created for use in acceptance api tests, but can be used anywhere else as well.
+
+See [dentelis/phpunit-json-assert](https://github.com/dentelis/phpunit-json-assert) for PhpUnit support.
 
 ## Specific
 
