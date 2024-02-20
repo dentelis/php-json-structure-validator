@@ -28,9 +28,13 @@ class ArrayType extends AbstractType implements TypeInterface
             $realType = $type;
             foreach ($values as $key => $value) {
                 if (is_callable($type)) {
-                    $realType = $type($value);
+                    try {
+                        $realType = $type($value);
+                    } catch (\UnhandledMatchError $e) {
+                        throw new RuntimeException('Array item type must be instance of TypeInterface');
+                    }
                     if (!($realType instanceof TypeInterface)) {
-                        throw new RuntimeException('Property type must be instance of TypeInterface');
+                        throw new RuntimeException('Array item type must be instance of TypeInterface');
                     }
                 }
                 $realType->validate($value, [...$path, '[' . $key . ']']);

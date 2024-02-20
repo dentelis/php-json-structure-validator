@@ -55,7 +55,12 @@ class ObjectType extends AbstractType implements TypeInterface
         //determine and validate properties type
         $this->addCustom(function (mixed $value, array $path): bool {
             foreach ($this->properties as $propertyName => [$typeOrClosure, $mandatory]) {
-                $type = is_callable($typeOrClosure) ? $typeOrClosure($value) : $typeOrClosure;
+                try {
+                    $type = is_callable($typeOrClosure) ? $typeOrClosure($value) : $typeOrClosure;
+                } catch (\UnhandledMatchError $e) {
+                    throw new RuntimeException('Property type must be instance of TypeInterface');
+                }
+
                 if (!($type instanceof TypeInterface)) {
                     throw new RuntimeException('Property type must be instance of TypeInterface');
                 }
