@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace tests\Object;
 
+use Dentelis\StructureValidator\Type\ArrayType;
 use Dentelis\StructureValidator\Type\BooleanType;
 use Dentelis\StructureValidator\Type\IntegerType;
 use Dentelis\StructureValidator\Type\NullType;
@@ -41,6 +42,22 @@ final class ObjectLogicTest extends TestCase
                 ],
                 self::objectWithLogic(),
             ],
+            [
+                (object)[
+                    'cnt' => 3,
+                    'data' => [
+                        'a', 'b', 'c'
+                    ]
+                ],
+                self::objectWithLogic2()
+            ],
+            [
+                (object)[
+                    'cnt' => 0,
+                    'data' => []
+                ],
+                self::objectWithLogic2()
+            ],
         ];
     }
 
@@ -54,6 +71,14 @@ final class ObjectLogicTest extends TestCase
             ->addProperty('id', (new IntegerType())->assertPositive())
             ->addProperty('sharable', (new BooleanType()))
             ->addProperty('url', fn($object) => ($object->sharable === true ? (new StringType())->assertUrl() : (new NullType())));
+    }
+
+    protected static function objectWithLogic2(): ObjectType
+    {
+        return (new ObjectType())
+            ->addProperty('cnt', (new IntegerType())->assertInterval(min: 0))
+            ->addProperty('data', (new ArrayType())->assertType((new StringType())->assertNotEmpty()))
+            ->addCustom(fn($object) => $object->cnt === count($object->data));
     }
 
     public static function failProvider(): array
@@ -89,6 +114,22 @@ final class ObjectLogicTest extends TestCase
                     'url' => 'https://example.com',
                 ],
                 self::objectWithLogic(),
+            ],
+            [
+                (object)[
+                    'cnt' => 4,
+                    'data' => [
+                        'a', 'b', 'c'
+                    ]
+                ],
+                self::objectWithLogic2()
+            ],
+            [
+                (object)[
+                    'cnt' => 0,
+                    'data' => ['a']
+                ],
+                self::objectWithLogic2()
             ],
         ];
 
