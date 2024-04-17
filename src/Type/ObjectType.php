@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Dentelis\StructureValidator\Type;
 
-use Closure;
 use Dentelis\StructureValidator\Exception\ValidationException;
 use Dentelis\StructureValidator\TypeInterface;
 use RuntimeException;
@@ -12,7 +11,7 @@ class ObjectType extends AbstractType implements TypeInterface
 {
 
     /**
-     * @var array(TypeInterface|Closure $type, bool $mandatory)
+     * @var array<string, array{0: TypeInterface|callable(object $object):TypeInterface, 1: bool}>
      */
     protected array $properties = [];
     private bool $isExtensible = false;
@@ -26,7 +25,7 @@ class ObjectType extends AbstractType implements TypeInterface
             //check we have all mandatory properties
             $missedProperties = [];
             $requiredProperties = [];
-            foreach ($this->properties as $propertyName => [$typeOrClosure, $mandatory]) {
+            foreach ($this->properties as $propertyName => [ /*$typeOrCallable*/, $mandatory]) {
                 if ($mandatory) {
                     $requiredProperties[] = $propertyName;
                     if (!self::propertyExistsInValue($propertyName, $value)) {
@@ -64,9 +63,9 @@ class ObjectType extends AbstractType implements TypeInterface
 
         //determine and validate properties type
         $this->addCustom(function (mixed $value, string $path): bool {
-            foreach ($this->properties as $propertyName => [$typeOrClosure, $mandatory]) {
+            foreach ($this->properties as $propertyName => [$typeOrCallable, $mandatory]) {
                 try {
-                    $type = is_callable($typeOrClosure) ? $typeOrClosure($value) : $typeOrClosure;
+                    $type = is_callable($typeOrCallable) ? $typeOrCallable($value) : $typeOrCallable;
                 } catch (\UnhandledMatchError $e) {
                     throw new RuntimeException('Property type must be instance of TypeInterface');
                 }
@@ -99,13 +98,13 @@ class ObjectType extends AbstractType implements TypeInterface
     /**
      * Add property to the object
      * @param string $property property name
-     * @param TypeInterface|Closure $type Type. Behavior differs depending on the type.
+     * @param TypeInterface|callable(object $object):TypeInterface $type Type. Behavior differs depending on the type.
      *    If TypeInterface passed, it runs TypeInterface::validate for property value
-     *    If Closure passed, property real type is determined before validation like Closure($object):TypeInterface
+     *    If callable passed, property real type is determined before validation like callable($object):TypeInterface
      * @param bool $mandatory false if this property can be missed from the object
      * @return $this
      */
-    public function addProperty(string $property, TypeInterface|Closure $type, bool $mandatory = true): self
+    public function addProperty(string $property, TypeInterface|callable $type, bool $mandatory = true): static
     {
         $this->properties[$property] = [$type, $mandatory];
         return $this;
@@ -115,7 +114,7 @@ class ObjectType extends AbstractType implements TypeInterface
      * Allows object to contain undescribed fields)
      * @return $this
      */
-    public function setExtensible(): self
+    public function setExtensible(): static
     {
         $this->isExtensible = true;
         return $this;

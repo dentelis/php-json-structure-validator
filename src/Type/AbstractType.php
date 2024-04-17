@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Dentelis\StructureValidator\Type;
 
-use Closure;
 use Dentelis\StructureValidator\Exception\ValidationException;
 use Dentelis\StructureValidator\TypeInterface;
 use RuntimeException;
@@ -28,14 +27,14 @@ abstract class AbstractType implements TypeInterface
 
     /**
      * Adds custom validation rule
-     * @param Closure $closure function($value, $path) must return true in case of success
+     * @param callable(mixed $value, string $path):bool $callable Custom check. Returns true on success.
      * @param bool $skipIfNull do not run check if value == null
      * @return $this
      * @todo consider about making protected
      */
-    public final function addCustom(Closure $closure, bool $skipIfNull = true): self
+    public final function addCustom(callable $callable, bool $skipIfNull = true): self
     {
-        $this->customConditions[] = [$closure, $skipIfNull];
+        $this->customConditions[] = [$callable, $skipIfNull];
         return $this;
     }
 

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Dentelis\StructureValidator\Type;
 
-use Closure;
 use Dentelis\StructureValidator\Exception\ValidationException;
 use Dentelis\StructureValidator\TypeInterface;
 use RuntimeException;
@@ -17,12 +16,13 @@ class ArrayType extends AbstractType implements TypeInterface
 
     /**
      * Assert array element type.
-     * @param TypeInterface|Closure $type Type. Behavior differs depending on the type.
+     * @param TypeInterface|callable(mixed $arrayItem):TypeInterface $type Type to be validated.
+     *    Behavior differs depending on the type.
      *    If TypeInterface passed, it runs TypeInterface::validate for each element.
-     *    If Closure passed, each element real type is determined before validation like Closure($item):TypeInterface
+     *    If callable passed, each element real type is determined before validation
      * @return $this
      */
-    public function assertType(TypeInterface|Closure $type): self
+    public function assertType(TypeInterface|callable $type): self
     {
         $this->addCustom(function (array $values, string $path) use ($type): bool {
             $realType = $type;
