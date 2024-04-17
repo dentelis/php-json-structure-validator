@@ -14,11 +14,14 @@ abstract class AbstractType implements TypeInterface
 
     private array $customConditions = [];
 
+    protected ?string $requiredType = null;
+
     public function __construct(?string $requiredType = null)
     {
-        if (!is_null($requiredType)) {
-            $this->addCustom(function (mixed $value) use ($requiredType): bool {
-                return ((is_null($value) && $this->getNullAllowed()) || gettype($value) === $requiredType) ?: throw new ValidationException('type', $requiredType, gettype($value));
+        $this->requiredType = $requiredType;
+        if (!is_null($this->requiredType)) {
+            $this->addCustom(function (mixed $value): bool {
+                return ((is_null($value) && $this->getNullAllowed()) || gettype($value) === $this->requiredType) ?: throw new ValidationException('type', $this->requiredType, gettype($value));
             }, false);
         }
     }
@@ -54,20 +57,26 @@ abstract class AbstractType implements TypeInterface
     /**
      * @inheritDoc
      */
-    public function validate(mixed $value, array $path = []): true
+    public function validate(mixed $value, ?string $path = null): true
     {
+
+        $path = $path ?? $this->requiredType;
+
         foreach ($this->customConditions as list($closure, $skipIfNull)) {
             if (is_null($value) && $skipIfNull) {
                 continue;
             }
+
             try {
                 $result = $closure($value, $path);
-                if ($result !== true) {
-                    throw new ValidationException('Custom assert', 'true', $result);
+            } catch (ValidationException $e) {
+                if (is_null($e->path)) {
+                    $e->setPath($path);
                 }
-            } catch (ValidationException $exception) {
-                $exception->setPath($path);
-                throw $exception;
+                throw $e;
+            }
+            if ($result !== true) {
+                throw new ValidationException('Custom assert', 'true', $result, $path);
             }
         }
         return true;

@@ -24,7 +24,7 @@ class ArrayType extends AbstractType implements TypeInterface
      */
     public function assertType(TypeInterface|Closure $type): self
     {
-        $this->addCustom(function (array $values, array $path) use ($type): bool {
+        $this->addCustom(function (array $values, string $path) use ($type): bool {
             $realType = $type;
             foreach ($values as $key => $value) {
                 if (is_callable($type)) {
@@ -37,7 +37,7 @@ class ArrayType extends AbstractType implements TypeInterface
                         throw new RuntimeException('Array item type must be instance of TypeInterface');
                     }
                 }
-                $realType->validate($value, [...$path, '[' . $key . ']']);
+                $realType->validate($value, $path . '[' . $key . ']');
             }
             return true;
         });

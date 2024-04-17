@@ -21,8 +21,8 @@ class ObjectType extends AbstractType implements TypeInterface
     {
         parent::__construct('object');
 
-
-        $this->addCustom(function (object $value): bool {
+        //@todo возможно есть смысл добавлять их не в конструкторе, а перед validate?
+        $this->addCustom(function (object $value, string $path): bool {
             //check we have all mandatory properties
             $missedProperties = [];
             $requiredProperties = [];
@@ -35,7 +35,12 @@ class ObjectType extends AbstractType implements TypeInterface
                 }
             }
             if (count($missedProperties) > 0) {
-                throw new ValidationException('properties', join(',', $requiredProperties), array_keys((array)$value));
+                throw new ValidationException(
+                    'properties',
+                    join(',', $requiredProperties),
+                    array_keys((array)$value),
+                    $path . '.' . join('|', $missedProperties) . ''
+                );
             }
 
             //check we don't have undescribed properties
@@ -44,7 +49,12 @@ class ObjectType extends AbstractType implements TypeInterface
                 $actualProperties = array_keys((array)$value);
                 return
                     array_diff($actualProperties, $expectedProperties,) === []
-                        ?: throw new ValidationException('properties', join(', ', $expectedProperties), join(', ', $actualProperties));
+                        ?: throw new ValidationException(
+                        'properties',
+                        join(', ', $expectedProperties),
+                        join(', ', $actualProperties),
+                        $path . '.' . join('|',  array_diff($actualProperties, $expectedProperties,)) . ''
+                    );
             }
 
             return true;
@@ -53,7 +63,7 @@ class ObjectType extends AbstractType implements TypeInterface
 
 
         //determine and validate properties type
-        $this->addCustom(function (mixed $value, array $path): bool {
+        $this->addCustom(function (mixed $value, string $path): bool {
             foreach ($this->properties as $propertyName => [$typeOrClosure, $mandatory]) {
                 try {
                     $type = is_callable($typeOrClosure) ? $typeOrClosure($value) : $typeOrClosure;
@@ -66,9 +76,9 @@ class ObjectType extends AbstractType implements TypeInterface
                 }
                 $propertyExists = self::propertyExistsInValue($propertyName, $value);
                 if ($propertyExists) {
-                    $type->validate($value->$propertyName, [...$path, $propertyName]);
+                    $type->validate($value->$propertyName, $path . '.' . $propertyName);
                 } elseif ($mandatory === true) {
-                    throw new ValidationException($propertyName, 'value', 'not found', [...$path, $propertyName]);
+                    throw new ValidationException($propertyName, 'value', 'not found', $path . '.' . $propertyName);
                 }
             }
             return true;

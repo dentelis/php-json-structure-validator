@@ -11,7 +11,7 @@ class ValidationException extends Exception
         string       $checked,
         mixed        $expected,
         mixed        $actual,
-        public array $path = [])
+        public ?string $path = null)
     {
         parent::__construct(sprintf(
             'Validation of %s failed: "%s" expected, but "%s" found.',
@@ -21,7 +21,7 @@ class ValidationException extends Exception
         ));
     }
 
-    public function setPath(array $path): self
+    public function setPath(string $path): static
     {
         $this->path = $path;
         return $this;

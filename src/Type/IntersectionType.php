@@ -49,7 +49,7 @@ class IntersectionType implements TypeInterface
     /**
      * @inheritDoc
      */
-    public function validate(mixed $value, array $path = []): true
+    public function validate(mixed $value, string $path = ''): true
     {
         foreach ($this->types as $type) {
             try {
