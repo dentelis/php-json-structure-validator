@@ -35,7 +35,7 @@ final class StringTest extends TestCase
             ['', (new StringType())->assertValueIn(['bar', ''])],
             ['user@example.com', (new StringType())->assertEmail()],
             ['https://example.com', (new StringType())->assertUrl()],
-            ['test foo bar', (new StringType())->addCustom(fn($value) => (str_contains($value, 'foo')))],
+            ['test foo bar', (new StringType())->addCustom(fn($value) => (str_contains((string) $value, 'foo')))],
             [null, (new StringType())->setNullAllowed()],
             [null, (new StringType())->setNullAllowed()->assertEmail()],
             [null, (new StringType())->setNullAllowed()->assertUrl()],
@@ -73,7 +73,7 @@ final class StringTest extends TestCase
             ['user@example.com', (new StringType())->assertEmail()->assertLength(max: 6)],
             ['foo', (new StringType())->assertValueIn(['bar'])],
             ['foo', (new StringType())->assertValueIn([])],
-            ['test bar', (new StringType())->addCustom(fn($value) => (str_contains($value, 'foo')))],
+            ['test bar', (new StringType())->addCustom(fn($value) => (str_contains((string) $value, 'foo')))],
         ];
 
     }

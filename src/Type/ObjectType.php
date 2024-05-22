@@ -66,7 +66,7 @@ class ObjectType extends AbstractType implements TypeInterface
             foreach ($this->properties as $propertyName => [$typeOrCallable, $mandatory]) {
                 try {
                     $type = is_callable($typeOrCallable) ? $typeOrCallable($value) : $typeOrCallable;
-                } catch (\UnhandledMatchError $e) {
+                } catch (\UnhandledMatchError) {
                     throw new RuntimeException('Property type must be instance of TypeInterface');
                 }
 

@@ -30,7 +30,7 @@ class ArrayType extends AbstractType implements TypeInterface
                 if (is_callable($type)) {
                     try {
                         $realType = $type($value);
-                    } catch (\UnhandledMatchError $e) {
+                    } catch (\UnhandledMatchError) {
                         throw new RuntimeException('Array item type must be instance of TypeInterface');
                     }
                     if (!($realType instanceof TypeInterface)) {

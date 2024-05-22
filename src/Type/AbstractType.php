@@ -59,9 +59,9 @@ abstract class AbstractType implements TypeInterface
     public function validate(mixed $value, ?string $path = null): true
     {
 
-        $path = $path ?? $this->requiredType;
+        $path ??= $this->requiredType;
 
-        foreach ($this->customConditions as list($closure, $skipIfNull)) {
+        foreach ($this->customConditions as [$closure, $skipIfNull]) {
             if (is_null($value) && $skipIfNull) {
                 continue;
             }
@@ -83,7 +83,6 @@ abstract class AbstractType implements TypeInterface
 
     /**
      * Assert value === expected
-     * @param mixed ...$expected
      * @return $this
      */
     public function assertValue(mixed ...$expected): self

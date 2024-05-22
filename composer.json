@@ -43,7 +43,7 @@
     "psalm": "vendor/bin/psalm --shepherd --show-info=true --no-diff"
   },
   "require-dev": {
-    "phpunit/phpunit": "^10.2@dev",
-    "vimeo/psalm": "^6.0@dev"
+    "phpunit/phpunit": "^11.2@dev",
+    "rector/rector": "dev-main"
   }
 }

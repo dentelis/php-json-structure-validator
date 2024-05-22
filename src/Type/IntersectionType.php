@@ -54,7 +54,7 @@ class IntersectionType implements TypeInterface
         foreach ($this->types as $type) {
             try {
                 $result = $type->validate($value, $path);
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 continue;
             }
             //there were no exceptions
