@@ -72,12 +72,15 @@ abstract class AbstractType implements TypeInterface
                 if (is_null($e->path)) {
                     $e->setPath($path);
                 }
+
                 throw $e;
             }
+
             if ($result !== true) {
                 throw new ValidationException('Custom assert', 'true', $result, $path);
             }
         }
+
         return true;
     }
 
@@ -92,8 +95,6 @@ abstract class AbstractType implements TypeInterface
 
     /**
      * Assert value in [expected]
-     * @param array $expectedValues
-     * @param bool $strict
      * @return $this
      */
     public function assertValueIn(array $expectedValues, bool $strict = false): self
@@ -103,7 +104,8 @@ abstract class AbstractType implements TypeInterface
                 throw new RuntimeException('Null is not possible value for assertValueIn. Use setNullAllowed() instead.');
             }
         }
-        return $this->addCustom(function (mixed $value) use ($expectedValues, $strict): bool {
+
+        return $this->addCustom(static function (mixed $value) use ($expectedValues, $strict) : bool {
             return in_array($value, $expectedValues, $strict) ?: throw new ValidationException('value', join(',', $expectedValues), $value);
         });
     }

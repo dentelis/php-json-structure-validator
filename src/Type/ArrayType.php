@@ -24,7 +24,7 @@ class ArrayType extends AbstractType implements TypeInterface
      */
     public function assertType(TypeInterface|callable $type): self
     {
-        $this->addCustom(function (array $values, string $path) use ($type): bool {
+        $this->addCustom(static function (array $values, string $path) use ($type) : bool {
             $realType = $type;
             foreach ($values as $key => $value) {
                 if (is_callable($type)) {
@@ -33,12 +33,15 @@ class ArrayType extends AbstractType implements TypeInterface
                     } catch (\UnhandledMatchError) {
                         throw new RuntimeException('Array item type must be instance of TypeInterface');
                     }
+
                     if (!($realType instanceof TypeInterface)) {
                         throw new RuntimeException('Array item type must be instance of TypeInterface');
                     }
                 }
+
                 $realType->validate($value, $path . '[' . $key . ']');
             }
+            
             return true;
         });
         return $this;
@@ -55,7 +58,6 @@ class ArrayType extends AbstractType implements TypeInterface
 
     /**
      * Assert array has exactly N elements
-     * @param int ...$expected
      * @return $this
      */
     public function assertCount(int ...$expected): self
@@ -69,7 +71,7 @@ class ArrayType extends AbstractType implements TypeInterface
      */
     public function assertCountIn(array $expectedCounts): self
     {
-        $this->addCustom(function (array $value) use ($expectedCounts): bool {
+        $this->addCustom(static function (array $value) use ($expectedCounts) : bool {
             return in_array(count($value), $expectedCounts, true) ?: throw new ValidationException('array count', join(',', $expectedCounts), count($value));
         });
         return $this;
@@ -86,22 +88,22 @@ class ArrayType extends AbstractType implements TypeInterface
 
     /**
      * Assert array count is in provided interval (inclusive)
-     * @param int|null $min
-     * @param int|null $max
      * @return $this
      */
     public function assertCountInterval(?int $min = null, ?int $max = null): self
     {
         if (!is_null($min)) {
-            $this->addCustom(function (array $value) use ($min): bool {
+            $this->addCustom(static function (array $value) use ($min) : bool {
                 return count($value) >= $min ?: throw new ValidationException('array count', '>=' . $min, count($value));
             });
         }
+
         if (!is_null($max)) {
-            $this->addCustom(function (array $value) use ($max): bool {
+            $this->addCustom(static function (array $value) use ($max) : bool {
                 return count($value) <= $max ?: throw new ValidationException('array count', '<=' . $max, count($value));
             });
         }
+
         return $this;
     }
 

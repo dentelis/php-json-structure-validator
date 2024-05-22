@@ -14,6 +14,7 @@ class ObjectType extends AbstractType implements TypeInterface
      * @var array<string, array{0: TypeInterface|callable(object $object):TypeInterface, 1: bool}>
      */
     protected array $properties = [];
+
     private bool $isExtensible = false;
 
     public function __construct()
@@ -33,7 +34,8 @@ class ObjectType extends AbstractType implements TypeInterface
                     }
                 }
             }
-            if (count($missedProperties) > 0) {
+
+            if ($missedProperties !== []) {
                 throw new ValidationException(
                     'properties',
                     join(',', $requiredProperties),
@@ -73,6 +75,7 @@ class ObjectType extends AbstractType implements TypeInterface
                 if (!($type instanceof TypeInterface)) {
                     throw new RuntimeException('Property type must be instance of TypeInterface');
                 }
+
                 $propertyExists = self::propertyExistsInValue($propertyName, $value);
                 if ($propertyExists) {
                     $type->validate($value->$propertyName, $path . '.' . $propertyName);
@@ -80,6 +83,7 @@ class ObjectType extends AbstractType implements TypeInterface
                     throw new ValidationException($propertyName, 'value', 'not found', $path . '.' . $propertyName);
                 }
             }
+
             return true;
         });
 

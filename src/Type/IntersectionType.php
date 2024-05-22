@@ -31,6 +31,7 @@ class IntersectionType implements TypeInterface
                 'An intersection type must be composed of at least two types',
             );
         }
+
         return $this;
     }
 
@@ -43,6 +44,7 @@ class IntersectionType implements TypeInterface
                 );
             }
         }
+
         return $this;
     }
 
@@ -57,10 +59,12 @@ class IntersectionType implements TypeInterface
             } catch (Throwable) {
                 continue;
             }
+
             //there were no exceptions
             return true;
 
         }
+
         //@todo better text
         throw new ValidationException('type', 'one of intersected types', 'other');
     }

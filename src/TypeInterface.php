@@ -9,8 +9,6 @@ interface TypeInterface
 {
     /**
      * Asserts provided data matches current structure
-     * @param string $path
-     * @return true
      * @throws RuntimeException on invalid configuration (code issues)
      * @throws ValidationException on validation failure
      */
